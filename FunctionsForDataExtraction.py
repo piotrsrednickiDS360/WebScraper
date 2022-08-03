@@ -13,8 +13,7 @@ def scrap_data_indexes(symbol):
         """PrzynaleÅ¼noÅÄ do indeksÃ³w\n\n\n\n\nIndeks\nUdziaÅ\n\n\n""",
         "").replace("\n\n", "\n").replace("\n\n", "\n")
     indexes = "\n".join([line for line in indexes.split('\n') if line.strip() != ''])
-    print(indexes)
-
+    #print(indexes)
     return indexes
 
 
