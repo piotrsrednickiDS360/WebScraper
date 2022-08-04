@@ -5,20 +5,13 @@
     <meta charset="utf-8">
     <meta name="description" content="page">
     <link rel="stylesheet" type="text/css" href="{% static 'TradingSupportApp/style.css' %}">
-    <title>{% block title %}BudzetApp Baza Buki{% endblock %}</title>
+    <title>{% block title %}Trading Support App{% endblock %}</title>
 
 </head>
-<style>
-    button.blocktext {
-    margin-left: auto;
-    margin-right: auto;
-    width: 8em;
-    display:block;
-    border-radius:15px;
-}
-</style>
-<div class="body">
-    <h1>Budżet domowy <div class="podtytulstrony">{% block podtytulstrony %}{% endblock %}</div></h1>
+<div>
+    <h1>
+        <div>{% block podtytulstrony %}{% endblock %}</div>
+    </h1>
 
 {% block content %}{% endblock %}
 </div>

@@ -4,43 +4,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="description" content="Home page">
-    <link rel="stylesheet" type="text/css" href="{% static 'budzetapp/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'TradingSupportApp/style.css' %}">
     <title>BudzetApp Zaloguj Buki</title>
 </head>
-<style>
-    button.blocktext {
-    margin-left: auto;
-    margin-right: auto;
-    width: 8em;
-    display:block;
-    border-radius:15px;
-}
-#prostokat1, #prostokat2,#prostokatlogin{
-    margin-top: 5px;
-    border-width: 15px;
-    background-color: #FDF5E6;
-    border-style:double;
-    border-color: #F08080;
-    padding: 5px;
-    text-align: left;
-    width:30%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom:5px;
-}
 
-
-</style>
-<div class="body">
-    <h1>Budżet domowy <div class="podtytulstrony">{% block podtytulstrony %}ekran logowania{% endblock %}</div></h1>
+<div>
+    <h1>Budżet domowy <div>{% block podtytulstrony %}ekran logowania{% endblock %}</div></h1>
     <div>
-        <form id="prostokat1" method="POST">
+        <form method="POST">
             {% csrf_token %}
             {{ form }}
             <button id="blocktext" type="submit">Log In</button>
         </form>
 
     </div>
-    <a id="prostokat2" href="{% url 'registrationpage' %}">Zarejestruj się</a>
+    <a href="{% url 'registrationpage' %}">Zarejestruj się</a>
 </div>
 </html>
