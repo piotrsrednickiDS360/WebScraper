@@ -1,14 +1,35 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+
+from django.forms import TextInput, PasswordInput, ModelForm
+
 from .models import *
 
 import datetime
 
 
-class LoginForm(forms.Form):
-    login = forms.CharField(label='login', max_length=100)
-    password = forms.CharField(label='password', max_length=100)
+class LoginForm(forms.ModelForm):
+
+    # username = forms.CharField(widget=forms.TextInput('class'={'placeholder': 'login', 'style': 'width: 300px;'}))
+    # password = forms.CharField(widget=forms.PasswordInput('class'={'placeholder': 'password', 'style': 'width: 300px;'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+        widgets = {
+            'username': TextInput(attrs={
+                'class': "form-control",
+                'style': 'max-width: 300px;',
+                'placeholder': 'login'
+            }),
+            'password': PasswordInput(attrs={
+                'class': "form-control",
+                'style': 'max-width: 300px;',
+                'placeholder': 'password'
+            })
+        }
+
 
 
 class CreateUserForm(UserCreationForm):

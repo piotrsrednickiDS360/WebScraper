@@ -6,21 +6,73 @@
 {% block podtytulstrony %}Trading Support App Main Page{% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
+
+    <style>
+    table {
+	border-collapse: collapse;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+table td {
+	padding: 15px;
+}
+table thead th {
+	background-color: #54585d;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 13px;
+	border: 1px solid #54585d;
+}
+table tbody td {
+	color: #636363;
+	border: 1px solid #dddfe1;
+}
+table tbody tr {
+	background-color: #f9fafb;}
+    </style>
 <div >Witaj {{ user.username }}!</div>
 
-    {% for symbol in symbols  %}
-        {% for  onedata in data.0 %}
-            {% for index in onedata.0 %}
-                <p>{{ index }}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>firma</th>
+                <th>komunikaty</th>
+                <th>wskaźniki</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for symbol in symbols  %}
+                <tr>
+                    <td>{{ symbol }}</td>
+                    <td>
+                        {% for annoumcement in data.0.2 %}
+                                <p>{{ annoumcement }}</p>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for el in data.0.1 %}
+                            <p>{{ el }} {{ data.0.1.el }}</p>
+                        {% endfor %}
+
+                    </td>
+                </tr>
+
             {% endfor %}
-            {% for pointer in onedata.1 %}
-                <p>{{ pointer }}</p>
-            {% endfor %}
-            {% for annoumcement in onedata.2 %}
-                <p>{{ annoumcement }}</p>
-            {% endfor %}
-        {% endfor %}
-    {% endfor %}
+        </tbody>
+
+    </table>
+
+{#    {% for symbol in symbols  %}#}
+{#        <p>{{ symbol }}</p>#}
+{#        {% for  onedata in data.0 %}#}
+{#            <p>{{ onedata }}</p>#}
+{#        {% endfor %}#}
+{#        {% for pointer in data.1 %}#}
+{#            <p>{{ pointer }}</p>#}
+{#        {% endfor %}#}
+{#        {% for annoumcement in data.2 %}#}
+{#            <p>{{ annoumcement }}</p>#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
     <a  href="{% url 'logout' %}">Logout</a>
 {% else %}
     <p >You are not logged in</p>

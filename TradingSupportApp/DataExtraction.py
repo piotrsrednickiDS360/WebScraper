@@ -9,6 +9,7 @@ for symbol in symbols:
     pointers = scrap_data_pointers(symbol)
     # komunikaty
     announcements = scrap_data_announcements(symbol)
-    print(indexes)
-    print(pointers)
-    print(announcements)
+    # print(indexes)
+    # print(pointers)
+    # print(announcements)
+    print("\n\n")

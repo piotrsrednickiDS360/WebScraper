@@ -35,6 +35,9 @@ def mainpage(request):
         pointers = scrap_data_pointers(symbol)
         # komunikaty
         announcements = scrap_data_announcements(symbol)
+
+        print(type(pointers))
+
         data.append([indexes, pointers, announcements])
         print(indexes)
         print(pointers)

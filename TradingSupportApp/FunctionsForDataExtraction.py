@@ -22,7 +22,7 @@ def scrap_data_indexes(symbol):
     indexes = "\n".join([line for line in indexes.split('\n') if line.strip() != ''])
     # print_results(indexes)
     indexes = indexes.split(sep="\n")
-    bufor={}
+    bufor=[]
     for index in indexes:
         bufor.append("")
     #print(type(indexes))
@@ -40,8 +40,19 @@ def scrap_data_pointers(symbol):
     pointers = "\n".join([line for line in pointers.split('\n') if line.strip() != ''])
     # print_results(pointers)
     pointers = pointers.split(sep="\n")
-    #print(type(pointers))
-    return pointers
+
+    dicHelp = zip(pointers[::2], pointers[1::2])
+    pointersDic = {}
+
+    for el in dicHelp:
+        cell = {el[0]: el[1]}
+        pointersDic.update(cell)
+
+    print("ELLLL")
+    for el in pointersDic:
+        print(pointersDic[el])
+
+    return pointersDic
 
 
 def scrap_data_announcements(symbol):
