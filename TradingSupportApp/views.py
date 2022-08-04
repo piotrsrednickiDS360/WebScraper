@@ -27,7 +27,8 @@ def mainpage(request):
     from bs4 import BeautifulSoup
     symbols = scrap_symbols()
     symbols = ["ACTION", "06MAGNA"]
-    data=[]
+    data = []
+    symbols_data = []
     for symbol in symbols:
         # przynależności do indeksów
         indexes = scrap_data_indexes(symbol)
@@ -42,8 +43,9 @@ def mainpage(request):
         print(indexes)
         print(pointers)
         print(announcements)
+        symbols_data.append([symbol, [indexes, pointers, announcements]])
     return render(request, 'TradingSupportApp/mainpage.html',
-                  {"symbols": symbols, "data":data})
+                  {"symbols": symbols, "data": data, "symbols_data": symbols_data})
 
 
 def registrationpage(request):

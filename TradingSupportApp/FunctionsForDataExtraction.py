@@ -22,11 +22,19 @@ def scrap_data_indexes(symbol):
     indexes = "\n".join([line for line in indexes.split('\n') if line.strip() != ''])
     # print_results(indexes)
     indexes = indexes.split(sep="\n")
-    bufor=[]
-    for index in indexes:
-        bufor.append("")
-    #print(type(indexes))
-    return indexes
+
+    dicHelp = zip(indexes[::2], indexes[1::2])
+    pointersDic = {}
+
+    for el in dicHelp:
+        cell = {el[0]: el[1]}
+        pointersDic.update(cell)
+
+    print("ELLLL")
+    for el in pointersDic:
+        print(pointersDic[el])
+
+    return pointersDic
 
 
 def scrap_data_pointers(symbol):

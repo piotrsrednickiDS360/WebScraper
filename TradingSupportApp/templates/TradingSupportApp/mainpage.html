@@ -37,22 +37,36 @@ table tbody tr {
                 <th>firma</th>
                 <th>komunikaty</th>
                 <th>wskaźniki</th>
+                <th>indeksy</th>
             </tr>
         </thead>
         <tbody>
-            {% for symbol in symbols  %}
+            {% for symbol,onedata in symbols_data  %}
                 <tr>
                     <td>{{ symbol }}</td>
                     <td>
-                        {% for annoumcement in data.0.2 %}
-                                <p>{{ annoumcement }}</p>
+                        {% for announcement in onedata.2 %}
+                    {#  {% if forloop.parentloop.counter0 == forloop.counter0 %}#}
+                                    <p>{{ announcement }}</p>
+                   {#  {% endif %}#}
                         {% endfor %}
                     </td>
                     <td>
-                        {% for el in data.0.1 %}
-                            <p>{{ el }} {{ data.0.1.el }}</p>
+                        {% for key, value in onedata.1.items %}
+                            <li>{{key}} - {{value}}</li>
                         {% endfor %}
+                    {#  {% for el in data.0.1 %} #}
+                 {#   <p>{{ el }} {{ data.0.1.el }}</p> #}
+                    {#  {% endfor %}     #}
 
+                    </td>
+                    <td>
+                        {% for key, value in onedata.0.items %}
+                            <li>{{key}} - {{value}}</li>
+                        {% endfor %}
+                    {#  {% for el in data.0.1 %} #}
+                 {#   <p>{{ el }} {{ data.0.1.el }}</p> #}
+                    {#  {% endfor %}     #}
                     </td>
                 </tr>
 
