@@ -26,7 +26,6 @@ def mainpage(request):
         scrap_symbols
     from bs4 import BeautifulSoup
     symbols = scrap_symbols()
-    symbols = ["ACTION", "06MAGNA"]
     data = []
     symbols_data = []
     for symbol in symbols:
@@ -36,13 +35,7 @@ def mainpage(request):
         pointers = scrap_data_pointers(symbol)
         # komunikaty
         announcements = scrap_data_announcements(symbol)
-
-        print(type(pointers))
-
         data.append([indexes, pointers, announcements])
-        print(indexes)
-        print(pointers)
-        print(announcements)
         symbols_data.append([symbol, [indexes, pointers, announcements]])
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "data": data, "symbols_data": symbols_data})

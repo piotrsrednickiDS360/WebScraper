@@ -4,9 +4,10 @@ import requests
 
 
 def print_results(variable):
-    print("-----------------start---------------------")
-    print(variable)
-    print("-----------------end---------------------")
+    pass
+    #print("-----------------start---------------------")
+    #print(variable)
+    #print("-----------------end---------------------")
 
 
 def scrap_data_indexes(symbol):
@@ -30,10 +31,6 @@ def scrap_data_indexes(symbol):
         cell = {el[0]: el[1]}
         pointersDic.update(cell)
 
-    print("ELLLL")
-    for el in pointersDic:
-        print(pointersDic[el])
-
     return pointersDic
 
 
@@ -56,10 +53,6 @@ def scrap_data_pointers(symbol):
         cell = {el[0]: el[1]}
         pointersDic.update(cell)
 
-    print("ELLLL")
-    for el in pointersDic:
-        print(pointersDic[el])
-
     return pointersDic
 
 
@@ -74,10 +67,8 @@ def scrap_data_announcements(symbol):
     bufor=""
     for announcement in announcements:
         announcement = announcement.text
-        #print(announcement)
         bufor+=announcement+"\n"
     bufor=bufor.split(sep="\n")
-    #print(type(bufor))
     return bufor
 
 
@@ -89,7 +80,5 @@ def scrap_symbols():
     for symbol in symbols:
         symbol = symbol.text
         symbol = "\n".join([line for line in symbol.split('\n') if line.strip() != ''])
-        # print(symbol)
         symbols_bufor.append(symbol)
-    #print(type(symbols_bufor))
     return symbols_bufor
