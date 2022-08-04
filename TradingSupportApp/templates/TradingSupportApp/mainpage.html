@@ -7,6 +7,20 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div >Witaj {{ user.username }}!</div>
+
+    {% for symbol in symbols  %}
+        {% for  onedata in data.0 %}
+            {% for index in onedata.0 %}
+                <p>{{ index }}</p>
+            {% endfor %}
+            {% for pointer in onedata.1 %}
+                <p>{{ pointer }}</p>
+            {% endfor %}
+            {% for annoumcement in onedata.2 %}
+                <p>{{ annoumcement }}</p>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
     <a  href="{% url 'logout' %}">Logout</a>
 {% else %}
     <p >You are not logged in</p>

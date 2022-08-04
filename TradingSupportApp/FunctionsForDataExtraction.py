@@ -20,7 +20,12 @@ def scrap_data_indexes(symbol):
         "").replace("\n\n", "\n").replace("\n\n", "\n").replace("SpÃ³Åka nie przynaleÅ¼y do Å¼adnego indeksu",
                                                                 "").replace("PrzynaleÅ¼noÅÄ do indeksÃ³w", "")
     indexes = "\n".join([line for line in indexes.split('\n') if line.strip() != ''])
-    print_results(indexes)
+    # print_results(indexes)
+    indexes = indexes.split(sep="\n")
+    bufor={}
+    for index in indexes:
+        bufor.append("")
+    #print(type(indexes))
     return indexes
 
 
@@ -34,6 +39,8 @@ def scrap_data_pointers(symbol):
         "\n\n", "\n").replace("zÅ", "PLN")
     pointers = "\n".join([line for line in pointers.split('\n') if line.strip() != ''])
     # print_results(pointers)
+    pointers = pointers.split(sep="\n")
+    #print(type(pointers))
     return pointers
 
 
@@ -45,11 +52,14 @@ def scrap_data_announcements(symbol):
 
     # komunikaty
     announcements = soup.find_all("span", class_="entry-title")
+    bufor=""
     for announcement in announcements:
-        pass
-        # print(announcement.text)
-
-    return announcements
+        announcement = announcement.text
+        #print(announcement)
+        bufor+=announcement+"\n"
+    bufor=bufor.split(sep="\n")
+    #print(type(bufor))
+    return bufor
 
 
 def scrap_symbols():
@@ -62,5 +72,5 @@ def scrap_symbols():
         symbol = "\n".join([line for line in symbol.split('\n') if line.strip() != ''])
         # print(symbol)
         symbols_bufor.append(symbol)
-
+    #print(type(symbols_bufor))
     return symbols_bufor

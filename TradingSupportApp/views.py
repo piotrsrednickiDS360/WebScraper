@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.template import loader
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, CreateUserForm
@@ -22,7 +21,26 @@ def homepage(request):
 
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
-    return render(request, 'TradingSupportApp/mainpage.html')
+    from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
+        scrap_data_pointers, \
+        scrap_symbols
+    from bs4 import BeautifulSoup
+    symbols = scrap_symbols()
+    symbols = ["ACTION", "06MAGNA"]
+    data=[]
+    for symbol in symbols:
+        # przynależności do indeksów
+        indexes = scrap_data_indexes(symbol)
+        # wskaźniki giełdowe
+        pointers = scrap_data_pointers(symbol)
+        # komunikaty
+        announcements = scrap_data_announcements(symbol)
+        data.append([indexes, pointers, announcements])
+        print(indexes)
+        print(pointers)
+        print(announcements)
+    return render(request, 'TradingSupportApp/mainpage.html',
+                  {"symbols": symbols, "data":data})
 
 
 def registrationpage(request):
