@@ -41,6 +41,7 @@ def mainpage(request):
                   {"symbols": symbols, "data": data, "symbols_data": symbols_data})
 
 
+
 def registrationpage(request):
     form = CreateUserForm(request.POST or None)
 
