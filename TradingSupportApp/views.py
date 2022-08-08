@@ -21,6 +21,7 @@ def homepage(request):
 
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
+
     from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
         scrap_data_pointers, \
         scrap_symbols
