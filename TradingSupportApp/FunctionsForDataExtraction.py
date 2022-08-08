@@ -5,9 +5,9 @@ import requests
 
 def print_results(variable):
     pass
-    #print("-----------------start---------------------")
-    #print(variable)
-    #print("-----------------end---------------------")
+    # print("-----------------start---------------------")
+    # print(variable)
+    # print("-----------------end---------------------")
 
 
 def scrap_data_indexes(symbol):
@@ -64,11 +64,13 @@ def scrap_data_announcements(symbol):
 
     # komunikaty
     announcements = soup.find_all("span", class_="entry-title")
-    bufor=""
+    bufor = ""
+    acquisitions = []
     for announcement in announcements:
         announcement = announcement.text
-        bufor+=announcement+"\n"
-    bufor=bufor.split(sep="\n")
+        if "nabycie" in announcement.lower():
+            bufor += announcement + "\n"
+    bufor = bufor.split(sep="\n")
     return bufor
 
 
