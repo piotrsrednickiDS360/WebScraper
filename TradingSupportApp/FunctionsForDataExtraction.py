@@ -63,14 +63,19 @@ def scrap_data_announcements(symbol):
     soup = BeautifulSoup(html_text_announcements, 'lxml')
 
     # komunikaty
-    announcements = soup.find_all("span", class_="entry-title")
-    bufor = ""
-    acquisitions = []
-    for announcement in announcements:
-        announcement = announcement.text
-        if "nabycie" in announcement.lower():
-            bufor += announcement + "\n"
-    bufor = bufor.split(sep="\n")
+    textTags = soup.find_all("span", class_="entry-title")
+    dateTags = soup.find_all("time", class_="entry-date")
+    bufor = []
+
+    for (text, date) in zip(textTags, dateTags):
+        announcementText = text.text
+
+        if "nabycie" in announcementText.lower():
+            # a = AnnouncementDTO(date['datetime'], text.text)
+            a = AnnouncementDTO(date.text, text.text) # date without formating
+
+            bufor.append(a)
+
     return bufor
 
 
@@ -84,3 +89,9 @@ def scrap_symbols():
         symbol = "\n".join([line for line in symbol.split('\n') if line.strip() != ''])
         symbols_bufor.append(symbol)
     return symbols_bufor
+
+
+class AnnouncementDTO:
+    def __init__(self, date, text):
+        self.date = date
+        self.text = text

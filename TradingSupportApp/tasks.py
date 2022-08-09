@@ -15,14 +15,12 @@ def scrap():
     data = []
     symbols_data = []
     for symbol in symbols:
-        # przynależności do indeksów
-        indexes = scrap_data_indexes(symbol)
         # wskaźniki giełdowe
         pointers = scrap_data_pointers(symbol)
         # komunikaty
         announcements = scrap_data_announcements(symbol)
-        data.append([indexes, pointers, announcements])
-        symbols_data.append([symbol, [indexes, pointers, announcements]])
+        data.append([pointers, announcements])
+        symbols_data.append([symbol, [pointers, announcements]])
 
 
 @shared_task(serializer='json')
@@ -36,12 +34,6 @@ def save_function(symbols_data):
                 symbol = el[0],
                 wanted = True
             )
-
-            for index in el[1][0]:
-                Indexes.objects.create(
-                    name = index.key,
-                    value = index.value
-                )
 
             for pointers in el[1][1]:
                 Pointers.objects.create(
