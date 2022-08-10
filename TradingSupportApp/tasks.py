@@ -14,13 +14,26 @@ def scrap():
     symbols = ["ASBIS"]
     data = []
     symbols_data = []
+    pointers_set={}
+    pointers_set=set(pointers_set)
+
     for symbol in symbols:
         # wskaźniki giełdowe
         pointers = scrap_data_pointers(symbol)
         # komunikaty
         announcements = scrap_data_announcements(symbol)
-        data.append([pointers, announcements])
-        symbols_data.append([symbol, [pointers, announcements]])
+
+        pointers_copy = pointers.copy() # bez dywidendy
+        for key in pointers:
+            if "Dywidenda" in key and "Dywidenda (%)" not in key:
+                pointers_set.add("Dywidenda")
+                pointers_copy["Dywidenda"] = pointers_copy.pop(key)
+            else:
+                pointers_set.add(key)
+
+        symbols_data.append([symbol, [pointers_copy, announcements]])
+
+
 
     print("pointers:", type(pointers))
 

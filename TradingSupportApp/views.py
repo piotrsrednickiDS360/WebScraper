@@ -7,6 +7,8 @@ from .forms import LoginForm, CreateUserForm
 
 
 # Create your views here.
+from .tasks import scrap
+
 
 def homepage(request):
     if request.method == 'POST':
@@ -33,30 +35,15 @@ def mainpage(request):
     data = []
     symbols_data = []
     symbols=["CELTIC","ACTION"]
-    pointers_set={}
-    pointers_set=set(pointers_set)
-    for symbol in symbols:
-        # przynależności do indeksów
-        indexes = scrap_data_indexes(symbol)
-        # wskaźniki giełdowe
-        pointers = scrap_data_pointers(symbol)
-        # komunikaty
-        announcements = scrap_data_announcements(symbol)
-        pointers_copy=pointers.copy()
-        for key in pointers:
-            if "Dywidenda" in key and "Dywidenda (%)" not in key:
-                pointers_set.add("Dywidenda")
-                pointers_copy["Dywidenda"]=pointers.pop(key)
-            else:
-                pointers_set.add(key)
-        # format datetime
-        # for a in announcements:
-        #     a.date = datetime.strptime(a.date,"%Y-%m-%dT%H:%M:%SZ")
 
-        data.append([indexes, pointers_copy, announcements])
-        symbols_data.append([symbol, [indexes, pointers_copy, announcements]])
+    # format datetime
+    # for a in announcements:
+    #     a.date = datetime.strptime(a.date,"%Y-%m-%dT%H:%M:%SZ")
+
+    symbols_data = scrap()
+
     return render(request, 'TradingSupportApp/mainpage.html',
-                  {"symbols": symbols, "data": data, "symbols_data": symbols_data})
+                  {"symbols": symbols, "symbols_data": symbols_data})
 
 
 
