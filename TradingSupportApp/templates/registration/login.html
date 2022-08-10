@@ -41,6 +41,19 @@ body{
     margin-left:auto;
     margin-right:auto;
 }
+.FormInputWindow{
+    font-size:20px;
+
+}
+.FormButton{
+    font-size:20px;
+}
+.form-group{
+    margin:5px;
+}
+.Authentication{
+    margin:5px;
+}
 </style>
 
 <body>
@@ -50,10 +63,12 @@ body{
         <form method="POST">
             {% csrf_token %}
             <div class="form-group">
-                {{ form.username }}
+                <p class="Authentication">Username</p>
+                <p class="Authentication">{{ form.username }}</p>
             </div>
             <div class="form-group">
-                {{ form.password }}
+                <p class="Authentication">Password</p>
+                <p class="Authentication">{{ form.password }}</p>
             </div>
             <div class="form-group">
                 <input class="btn btn-primary" type="submit" value="Submit">

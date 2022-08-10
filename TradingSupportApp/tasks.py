@@ -39,7 +39,7 @@ def scrap():
 
     save_function(symbols_data)
 
-    return symbols_data
+    return symbols_data,pointers_set
 
 
 def save_function(symbols_data):
