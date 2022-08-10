@@ -5,7 +5,7 @@ from django.template import loader
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, CreateUserForm
 
-
+from .FunctionsForDataExtraction import scrap_symbols
 # Create your views here.
 from .tasks import scrap
 
@@ -25,23 +25,12 @@ def homepage(request):
 
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
-
-    from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
-        scrap_data_pointers, \
-        scrap_symbols
-    from bs4 import BeautifulSoup
     symbols = scrap_symbols()
-    symbols =["ASBIS"]
-    data = []
     symbols_data = []
-    symbols=["CELTIC","ACTION"]
-
     # format datetime
     # for a in announcements:
     #     a.date = datetime.strptime(a.date,"%Y-%m-%dT%H:%M:%SZ")
-
     symbols_data = scrap()
-
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data})
 

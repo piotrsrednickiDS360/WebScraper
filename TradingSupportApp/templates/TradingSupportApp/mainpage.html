@@ -1,14 +1,14 @@
 {% extends "TradingSupportApp/base.html" %}
 
 {% block title %}Interface{% endblock %}
-{% block href%}{% url 'logout' %}{%endblock%}
 {% block cofnij%}Wyloguj{%endblock%}
 {% block podtytulstrony %}Trading Support App Main Page{% endblock %}
 {% block content %}
-{% if user.is_authenticated %}
+<style>
 
-    <style>
-    table {
+table {
+
+    margin-top:52px;
 	border-collapse: collapse;
     font-family: Tahoma, Geneva, sans-serif;
 }
@@ -16,6 +16,7 @@ table td {
 	padding: 15px;
 }
 table thead th {
+
 	background-color: #54585d;
 	color: #ffffff;
 	font-weight: bold;
@@ -27,14 +28,17 @@ table tbody td {
 	border: 1px solid #dddfe1;
 }
 table tbody tr {
+
 	background-color: #f9fafb;}
-    </style>
-<div >Witaj {{ user.username }}!</div>
+.Green{
+    background-color: #04AA6D;
+}
+</style>
 
     <table>
         <thead>
             <tr>
-                <th>firma</th>
+                <th class="Green">firma</th>
                 <th>komunikaty</th>
                 <th>wskaźniki</th>
             </tr>
@@ -74,9 +78,4 @@ table tbody tr {
 {#            <p>{{ annoumcement }}</p>#}
 {#        {% endfor %}#}
 {#    {% endfor %}#}
-    <a  href="{% url 'logout' %}">Logout</a>
-{% else %}
-    <p >You are not logged in</p>
-    <a  href="{% url 'login' %}">Login</a>
-{% endif %}
 {% endblock %}
