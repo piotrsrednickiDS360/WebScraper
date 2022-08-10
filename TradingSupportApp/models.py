@@ -18,5 +18,5 @@ class Pointers(models.Model):
 
 
 class Announcements(models.Model):
-    date = models.DateField(default=datetime.datetime.today())
+    date = models.DateField()
     text = models.CharField(max_length=10)
