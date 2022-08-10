@@ -1,4 +1,5 @@
 from celery import shared_task
+from datetime import datetime
 
 from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
     scrap_data_pointers, \
@@ -8,10 +9,9 @@ from bs4 import BeautifulSoup
 from TradingSupportApp.models import *
 
 
-@shared_task
 def scrap():
-
     symbols = scrap_symbols()
+    symbols = ["ASBIS"]
     data = []
     symbols_data = []
     for symbol in symbols:
@@ -22,32 +22,40 @@ def scrap():
         data.append([pointers, announcements])
         symbols_data.append([symbol, [pointers, announcements]])
 
+    print("pointers:", type(pointers))
 
-@shared_task(serializer='json')
+    save_function(symbols_data)
+
+    return symbols_data
+
+
 def save_function(symbols_data):
     print('starting')
-    new_count = 0
 
     for el in symbols_data:
+        # print(el)
+
         try:
             Company.objects.create(
-                symbol = el[0],
-                wanted = True
+                symbol=el[0],
+                wanted=True
             )
 
-            for pointers in el[1][1]:
+            for p_key in el[1][0]:
+                # print(p_key, el[1][0][p_key], '\n')
                 Pointers.objects.create(
-                    name = pointers.key,
-                    value = pointers.value
+                    name=p_key,
+                    value=el[1][0][p_key]
                 )
 
-            for announcements in el[1][2]:
+            for a in el[1][1]:
                 Announcements.objects.create(
-                    text = announcements
+                    text=a.text,
+                    date=datetime.datetime.strptime(a.date, "%Y-%m-%d %H:%M")
                 )
 
         except Exception as e:
-            print('failed at latest_article is none')
+            print('failed')
             print(e)
             break
 

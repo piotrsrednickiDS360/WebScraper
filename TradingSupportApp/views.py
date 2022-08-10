@@ -5,8 +5,9 @@ from django.template import loader
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, CreateUserForm
 
-
 # Create your views here.
+from .tasks import scrap
+
 
 def homepage(request):
     if request.method == 'POST':
@@ -24,31 +25,12 @@ def homepage(request):
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
 
-    from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
-        scrap_data_pointers, \
-        scrap_symbols
-    from bs4 import BeautifulSoup
-    symbols = scrap_symbols()
-    symbols =["ASBIS"]
+    symbols = ["ASBIS"]
     data = []
-    symbols_data = []
-    for symbol in symbols:
-        # przynależności do indeksów
-        indexes = scrap_data_indexes(symbol)
-        # wskaźniki giełdowe
-        pointers = scrap_data_pointers(symbol)
-        # komunikaty
-        announcements = scrap_data_announcements(symbol)
+    symbols_data = scrap()
 
-        # format datetime
-        # for a in announcements:
-        #     a.date = datetime.strptime(a.date,"%Y-%m-%dT%H:%M:%SZ")
-
-        data.append([indexes, pointers, announcements])
-        symbols_data.append([symbol, [indexes, pointers, announcements]])
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "data": data, "symbols_data": symbols_data})
-
 
 
 def registrationpage(request):
