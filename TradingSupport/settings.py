@@ -51,6 +51,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+Q_CLUSTER = {
+    "name": "TradingSupportApp",
+    "orm": "default",  # Use Django's ORM + database for broker
+}
+
 ROOT_URLCONF = 'TradingSupport.urls'
 
 TEMPLATES = [
