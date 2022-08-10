@@ -44,14 +44,14 @@ table tbody tr {
                 <tr>
                     <td>{{ symbol }}</td>
                     <td>
-                        {% for announcement in onedata.2 %}
+                        {% for announcement in onedata.1 %}
                     {#  {% if forloop.parentloop.counter0 == forloop.counter0 %}#}
                                     <p>{{ announcement.date}} : {{announcement.text}}</p>
                    {#  {% endif %}#}
                         {% endfor %}
                     </td>
                     <td>
-                        {% for key, value in onedata.1.items %}
+                        {% for key, value in onedata.0.items %}
                             <li>{{key}} - {{value}}</li>
                         {% endfor %}
                     </td>

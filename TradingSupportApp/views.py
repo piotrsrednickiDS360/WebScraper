@@ -32,7 +32,6 @@ def mainpage(request):
     symbols =["ASBIS"]
     data = []
     symbols_data = []
-    symbols=["CELTIC","ACTION"]
     for symbol in symbols:
         # przynależności do indeksów
         indexes = scrap_data_indexes(symbol)
@@ -53,15 +52,13 @@ def mainpage(request):
 
 
 def registrationpage(request):
-    """form = CreateUserForm(request.POST or None)
+    form = CreateUserForm(request.POST or None)
 
     if request.method == 'POST':
         if form.is_valid():
             form.save()
             return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})
-    return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})"""
-    return render(request, 'TradingSupportApp/registrationpage.html')
-
+    return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})
 
 
 def get_name(request):
