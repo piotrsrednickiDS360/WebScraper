@@ -5,9 +5,8 @@ from django.template import loader
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, CreateUserForm
 
-# Create your views here.
-from .tasks import scrap
 
+# Create your views here.
 
 def homepage(request):
     if request.method == 'POST':
@@ -25,22 +24,52 @@ def homepage(request):
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
 
-    symbols = ["ASBIS"]
+    from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
+        scrap_data_pointers, \
+        scrap_symbols
+    from bs4 import BeautifulSoup
+    symbols = scrap_symbols()
+    symbols =["ASBIS"]
     data = []
-    symbols_data = scrap()
+    symbols_data = []
+    symbols=["CELTIC","ACTION"]
+    pointers_set={}
+    pointers_set=set(pointers_set)
+    for symbol in symbols:
+        # przynależności do indeksów
+        indexes = scrap_data_indexes(symbol)
+        # wskaźniki giełdowe
+        pointers = scrap_data_pointers(symbol)
+        # komunikaty
+        announcements = scrap_data_announcements(symbol)
+        pointers_copy=pointers.copy()
+        for key in pointers:
+            if "Dywidenda" in key and "Dywidenda (%)" not in key:
+                pointers_set.add("Dywidenda")
+                pointers_copy["Dywidenda"]=pointers.pop(key)
+            else:
+                pointers_set.add(key)
+        # format datetime
+        # for a in announcements:
+        #     a.date = datetime.strptime(a.date,"%Y-%m-%dT%H:%M:%SZ")
 
+        data.append([indexes, pointers_copy, announcements])
+        symbols_data.append([symbol, [indexes, pointers_copy, announcements]])
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "data": data, "symbols_data": symbols_data})
 
 
+
 def registrationpage(request):
-    form = CreateUserForm(request.POST or None)
+    """form = CreateUserForm(request.POST or None)
 
     if request.method == 'POST':
         if form.is_valid():
             form.save()
             return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})
-    return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})
+    return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})"""
+    return render(request, 'TradingSupportApp/registrationpage.html')
+
 
 
 def get_name(request):
