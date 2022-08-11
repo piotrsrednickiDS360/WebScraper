@@ -26,11 +26,23 @@ def homepage(request):
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
     symbols = scrap_symbols()
-    symbols_data = []
-    # format datetime
-    # for a in announcements:
-    #     a.date = datetime.strptime(a.date,"%Y-%m-%dT%H:%M:%SZ")
+
     symbols_data, pointers_set = scrap()
+
+    # print("-----------\n")
+    # for a in symbols_data[0][1][1]:
+    #     print(a.date, '\n')
+    # print("-----------\n")
+
+    # format datetime to display
+    for a in symbols_data[0][1][1]:
+        a.date = datetime.fromisoformat(a.date)
+        a.date = datetime.fromisoformat(a.date)
+        a.date = datetime.strftime(a.date, "%Y-%m-%d %H:%M")
+
+
+
+
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 

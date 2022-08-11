@@ -11,11 +11,11 @@ from TradingSupportApp.models import *
 
 def scrap():
     symbols = scrap_symbols()
-    symbols = ["ASBIS","AGORA","ACTION","AGROTON","AIGAMES","AILLERON"]
+    symbols = ["ASBIS", "AGORA", "ACTION", "AGROTON", "AIGAMES", "AILLERON"]
     data = []
     symbols_data = []
-    pointers_set={}
-    pointers_set=set(pointers_set)
+    pointers_set = {}
+    pointers_set = set(pointers_set)
 
     for symbol in symbols:
         # wskaźniki giełdowe
@@ -23,7 +23,7 @@ def scrap():
         # komunikaty
         announcements = scrap_data_announcements(symbol)
 
-        pointers_copy = pointers.copy() # bez dywidendy
+        pointers_copy = pointers.copy()  # bez dywidendy
         for key in pointers:
             if "Dywidenda" in key and "Dywidenda (%)" not in key:
                 pointers_set.add("Dywidenda")
@@ -34,12 +34,11 @@ def scrap():
         symbols_data.append([symbol, [pointers_copy, announcements]])
 
 
-
-    print("pointers:", type(pointers))
-
+    # print("pointers:", type(pointers))
+    delete_older_function()
     save_function(symbols_data)
 
-    return symbols_data,pointers_set
+    return symbols_data, pointers_set
 
 
 def save_function(symbols_data):
@@ -73,3 +72,8 @@ def save_function(symbols_data):
             break
 
     return print('finished')
+
+
+def delete_older_function():
+    today = datetime.datetime.now()
+    print("today: ", today)

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników">
+    <list default="true" id="6035961f-8df5-435f-87d0-e7f62867ad61" name="Changes" comment="works bez dywidendy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupportApp/FunctionsForDataExtraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/FunctionsForDataExtraction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupportApp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/mainpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/mainpage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TradingSupportApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
@@ -11,6 +13,9 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -36,7 +41,8 @@
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
   <component name="RunManager">
@@ -67,7 +73,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="" />
+      <changelist id="6035961f-8df5-435f-87d0-e7f62867ad61" name="Changes" comment="works bez dywidendy" />
       <created>1660151991632</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -77,6 +83,7 @@
       <workItem from="1660154561061" duration="5204000" />
       <workItem from="1660202985497" duration="1802000" />
       <workItem from="1660234600481" duration="945000" />
+      <workItem from="1660239710492" duration="6138000" />
     </task>
     <task id="LOCAL-00001" summary="database">
       <created>1660152578463</created>
