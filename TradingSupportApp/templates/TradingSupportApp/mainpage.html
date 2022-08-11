@@ -59,11 +59,6 @@ table tbody tr {
                             <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>
                         {% endfor %}
                     </td>
-                    <td>
-                        {% for key, value in onedata.0.items %}
-                            <li>{{key}} - {{value}}</li>
-                        {% endfor %}
-                    </td>
                     {% for element in pointers_set %}
                         <td>
                             {% for key,value in onedata.0.items %}

@@ -30,14 +30,16 @@ def mainpage(request):
     # format datetime
     # for a in announcements:
     #     a.date = datetime.strptime(a.date,"%Y-%m-%dT%H:%M:%SZ")
-    symbols_data,pointers_set = scrap()
+    symbols_data, pointers_set = scrap()
     return render(request, 'TradingSupportApp/mainpage.html',
-                  {"symbols": symbols, "symbols_data": symbols_data,"pointers_set":pointers_set})
+                  {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 
 
 def filtercompanies(request):
     template = loader.get_template('TradingSupportApp/filtercompanies.html')
     return render(request, 'TradingSupportApp/filtercompanies.html')
+
+
 def registrationpage(request):
     """form = CreateUserForm(request.POST or None)
 
@@ -47,7 +49,6 @@ def registrationpage(request):
             return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})
     return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})"""
     return render(request, 'TradingSupportApp/registrationpage.html')
-
 
 
 def get_name(request):
