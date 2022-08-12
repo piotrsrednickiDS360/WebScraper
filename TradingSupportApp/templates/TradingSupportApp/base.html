@@ -23,9 +23,12 @@
     padding: 14px 16px;
     }
 .LogInButton,.LogOutButton{
-    border-top-left-radius:15px;
+    border-left-style:solid;
+    border-width:5px;
+    border-color:#54585d;
     position: fixed;
-    bottom: 0;
+    z-index:101;
+    top: 0;
     right: 0;
     width: 100px;
     height: 40px;
@@ -34,7 +37,7 @@
     background-color: #333;
     color:#f2f2f2;
     font-size:24px;
-    padding-top:15px;
+    padding-top:12px;
 }
 .FilterButton{
     border-left-style:solid;
@@ -52,6 +55,25 @@
     color:#f2f2f2;
     font-size:24px;
     padding-top:12px;
+    margin-right:210px;
+}
+.UnFilterButton{
+    border-left-style:solid;
+    border-width:5px;
+    border-color:#54585d;
+    position: fixed;
+    z-index:101;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 40px;
+    background-color: #522d5b;
+    text-align:center;
+    background-color: #333;
+    color:#f2f2f2;
+    font-size:24px;
+    padding-top:12px;
+    margin-right:315px;
 }
 .MainButton{
     border-left-style:solid;
@@ -79,7 +101,7 @@
     z-index:101;
     top: 0;
     left: 0;
-    width: 175px;
+    width: 250px;
     height: 40px;
     background-color: #522d5b;
     text-align:center;
@@ -89,7 +111,7 @@
     padding-top:12px;
 }
 .MainTable{
-
+    margin-top:52px;
 }
 body{
     background:linear-gradient(45DEG,#2F1C53,#A46DFF,#F6D1Fd);
@@ -127,7 +149,12 @@ a:active {
     </div>
     <div class="FilterButton">
         {% block FilterButton %}
-            <a  href="{% url 'filtercompanies' %}">Filters</a>
+            <a  href="{% url 'filtercompanies' %}">Filter</a>
+        {% endblock %}
+    </div>
+    <div class="UnFilterButton">
+        {% block UnFilterButton %}
+            <a  href="{% url 'unfiltercompanies' %}">Unfilter</a>
         {% endblock %}
     </div>
     <div class="MainButton">

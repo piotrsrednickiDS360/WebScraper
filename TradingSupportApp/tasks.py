@@ -11,7 +11,7 @@ from TradingSupportApp.models import *
 
 def scrap():
     symbols = scrap_symbols()
-    symbols = ["ASBIS", "AGORA", "ACTION", "AGROTON", "AIGAMES", "AILLERON"]
+    symbols = ["ASBIS", "AGORA", "ACTION", "AGROTON", "AIGAMES", "AILLERON","ASSECOPOL"]
     data = []
     symbols_data = []
     pointers_set = {}

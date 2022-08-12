@@ -7,13 +7,13 @@
 <style>
 
 table {
-
-    margin-top:52px;
+    text-align:center;
 	border-collapse: collapse;
     font-family: Tahoma, Geneva, sans-serif;
+    width:100%;
 }
 table td {
-	padding: 15px;
+	padding: 10px;
 }
 table thead th {
 
@@ -37,6 +37,10 @@ table tbody tr {
     margin-top:5px;
     margin-bottom:5px;
 }
+.symbols{
+    color:forestgreen;
+    font-weight:bold;
+}
 </style>
 
     <table>
@@ -53,7 +57,7 @@ table tbody tr {
         <tbody>
             {% for symbol,onedata in symbols_data  %}
                 <tr>
-                    <td>{{ symbol }}</td>
+                    <td class="symbols">{{ symbol }}</td>
                     <td>
                         {% for announcement in onedata.1 %}
                             <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>
@@ -63,7 +67,7 @@ table tbody tr {
                         <td>
                             {% for key,value in onedata.0.items %}
                                 {% if key == element %}
-                                    <li>{{ value }}</li>
+                                    <p>{{ value }}</p>
                                 {% endif %}
                             {% endfor %}
                         </td>

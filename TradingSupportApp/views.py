@@ -1,11 +1,12 @@
 from datetime import datetime
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
-from django.http import HttpResponseRedirect
-from .forms import LoginForm, CreateUserForm
 
 from .FunctionsForDataExtraction import scrap_symbols
+from .forms import LoginForm, FilterForm, UnFilterForm
+from .models import Company
 # Create your views here.
 from .tasks import scrap
 
@@ -35,21 +36,45 @@ def mainpage(request):
     # print("-----------\n")
 
     # format datetime to display
-    for a in symbols_data[0][1][1]:
+    """for a in symbols_data[0][1][1]:
         a.date = datetime.fromisoformat(a.date)
         a.date = datetime.fromisoformat(a.date)
-        a.date = datetime.strftime(a.date, "%Y-%m-%d %H:%M")
-
-
-
+        a.date = datetime.strftime(a.date, "%Y-%m-%d %H:%M")"""
 
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 
 
 def filtercompanies(request):
-    template = loader.get_template('TradingSupportApp/filtercompanies.html')
-    return render(request, 'TradingSupportApp/filtercompanies.html')
+    # Company.objects.all().update(wanted=True)
+    if request.method == 'POST':
+        form = FilterForm(request.POST)
+    else:
+        form = FilterForm()
+
+    if form.is_valid():
+        template = loader.get_template('TradingSupportApp/filtercompanies.html')
+        Company.objects.filter(symbol=form.cleaned_data['symbol']).update(wanted=False)
+        return render(request, 'TradingSupportApp/filtercompanies.html', {"form": FilterForm()})
+    else:
+        template = loader.get_template('TradingSupportApp/filtercompanies.html')
+        return render(request, 'TradingSupportApp/filtercompanies.html', {"form": FilterForm()})
+
+
+def unfiltercompanies(request):
+    # Company.objects.all().update(wanted=True)
+    if request.method == 'POST':
+        form = UnFilterForm(request.POST)
+    else:
+        form = UnFilterForm()
+
+    if form.is_valid():
+        template = loader.get_template('TradingSupportApp/unfiltercompanies.html')
+        Company.objects.filter(symbol=form.cleaned_data['symbol']).update(wanted=True)
+        return render(request, 'TradingSupportApp/unfiltercompanies.html', {"form": UnFilterForm()})
+    else:
+        template = loader.get_template('TradingSupportApp/unfiltercompanies.html')
+        return render(request, 'TradingSupportApp/unfiltercompanies.html', {"form": UnFilterForm()})
 
 
 def registrationpage(request):

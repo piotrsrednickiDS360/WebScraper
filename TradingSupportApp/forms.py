@@ -10,7 +10,6 @@ import datetime
 
 
 class LoginForm(forms.ModelForm):
-
     # username = forms.CharField(widget=forms.TextInput('class'={'placeholder': 'login', 'style': 'width: 300px;'}))
     # password = forms.CharField(widget=forms.PasswordInput('class'={'placeholder': 'password', 'style': 'width: 300px;'}))
 
@@ -31,7 +30,6 @@ class LoginForm(forms.ModelForm):
         }
 
 
-
 class CreateUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -43,3 +41,12 @@ class CreateUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class FilterForm(forms.Form):
+    name_choices = [(i['symbol'], i['symbol']) for i in Company.objects.filter(wanted=True).values('symbol').distinct()]
+    symbol = forms.ChoiceField(choices=name_choices)
+
+class UnFilterForm(forms.Form):
+    name_choices = [(i['symbol'], i['symbol']) for i in Company.objects.filter(wanted=False).values('symbol').distinct()]
+    symbol = forms.ChoiceField(choices=name_choices)
