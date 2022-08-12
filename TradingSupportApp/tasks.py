@@ -1,5 +1,5 @@
 from celery import shared_task
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
     scrap_data_pointers, \
@@ -11,7 +11,7 @@ from TradingSupportApp.models import *
 
 def scrap():
     symbols = scrap_symbols()
-    symbols = ["ASBIS", "AGORA", "ACTION", "AGROTON", "AIGAMES", "AILLERON","ASSECOPOL"]
+    symbols = ["ASBIS", "AGORA", "ACTION", "AGROTON", "AIGAMES", "AILLERON", "ASSECOPOL"]
     data = []
     symbols_data = []
     pointers_set = {}
@@ -33,7 +33,6 @@ def scrap():
 
         symbols_data.append([symbol, [pointers_copy, announcements]])
 
-
     # print("pointers:", type(pointers))
     delete_older_function()
     save_function(symbols_data)
@@ -48,22 +47,24 @@ def save_function(symbols_data):
         # print(el)
 
         try:
-            Company.objects.create(
+            Company.objects.update_or_create(
                 symbol=el[0],
                 wanted=True
             )
 
             for p_key in el[1][0]:
                 # print(p_key, el[1][0][p_key], '\n')
-                Pointers.objects.create(
+                Pointers.objects.update_or_create(
                     name=p_key,
                     value=el[1][0][p_key]
                 )
 
             for a in el[1][1]:
-                Announcements.objects.create(
+                a.date = datetime.datetime.fromisoformat(a.date)
+                a.date = datetime.datetime.strftime(a.date, "%Y-%m-%d")
+                Announcements.objects.update_or_create(
                     text=a.text,
-                    date=datetime.datetime.strptime(a.date, "%Y-%m-%d %H:%M")
+                    date=a.date
                 )
 
         except Exception as e:
@@ -75,5 +76,17 @@ def save_function(symbols_data):
 
 
 def delete_older_function():
-    today = datetime.datetime.now()
-    print("today: ", today)
+    print("Start deleting: \n")
+    # today = datetime.datetime.now()
+    # print("today: ", today, '\n')
+
+    try:
+        print("Start deleting: \n")
+        how_many_days = datetime.datetime.now() - datetime.timedelta(days=14)
+        Announcements.objects.filter(date__lte=how_many_days).delete()
+
+    except Exception as e:
+        print('failed deleting')
+        print(e)
+
+    return print('deleting finished')

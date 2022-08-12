@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6035961f-8df5-435f-87d0-e7f62867ad61" name="Changes" comment="works bez dywidendy">
+    <list default="true" id="6035961f-8df5-435f-87d0-e7f62867ad61" name="Changes" comment="fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupport/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupport/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupportApp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TradingSupportApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
@@ -103,7 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660164374533</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix">
+      <created>1660305404557</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1660305404557</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,6 +133,7 @@
     <MESSAGE value="database" />
     <MESSAGE value="simple changes (non-important)" />
     <MESSAGE value="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
 </project>
