@@ -45,8 +45,10 @@ class CreateUserForm(UserCreationForm):
 
 class FilterForm(forms.Form):
     name_choices = [(i['symbol'], i['symbol']) for i in Company.objects.filter(wanted=True).values('symbol').distinct()]
-    symbol = forms.ChoiceField(choices=name_choices)
+    symbol = forms.TypedChoiceField(choices=name_choices)
+
 
 class UnFilterForm(forms.Form):
-    name_choices = [(i['symbol'], i['symbol']) for i in Company.objects.filter(wanted=False).values('symbol').distinct()]
-    symbol = forms.ChoiceField(choices=name_choices)
+    name_choices = [(i['symbol'], i['symbol']) for i in
+                    Company.objects.filter(wanted=False).values('symbol').distinct()]
+    symbol = forms.TypedChoiceField(choices=name_choices)
