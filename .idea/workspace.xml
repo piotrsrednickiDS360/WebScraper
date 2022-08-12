@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników">
-      <change afterPath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/unfiltercompanies.html" afterDir="false" />
+    <list default="true" id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="creating filters, updating some stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/filtercompanies.html" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/filtercompanies.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupportApp/FunctionsForDataExtraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/FunctionsForDataExtraction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/mainpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/templates/TradingSupportApp/mainpage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660235592701</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="creating filters, updating some stuff">
+      <created>1660303355740</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1660303355746</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +140,7 @@
     <MESSAGE value="database" />
     <MESSAGE value="simple changes (non-important)" />
     <MESSAGE value="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników" />
+    <MESSAGE value="creating filters, updating some stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="creating filters, updating some stuff" />
   </component>
 </project>

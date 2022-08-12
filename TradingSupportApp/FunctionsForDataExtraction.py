@@ -71,8 +71,8 @@ def scrap_data_announcements(symbol):
         announcementText = text.text
 
         if "nabycie" in announcementText.lower():
-            announcementText = "Nabycie akcji własnych"
-            a = AnnouncementDTO(date['datetime'], text.text)
+            announcementText = "Nabycie akcji wlasnych"
+            a = AnnouncementDTO(date['datetime'], announcementText)
             # a = AnnouncementDTO(date.text, announcementText) # date without formating
 
             bufor.append(a)
