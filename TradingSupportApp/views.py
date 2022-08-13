@@ -35,12 +35,6 @@ def mainpage(request):
     #     print(a.date, '\n')
     # print("-----------\n")
 
-    # format datetime to display
-    """for a in symbols_data[0][1][1]:
-        a.date = datetime.fromisoformat(a.date)
-        a.date = datetime.fromisoformat(a.date)
-        a.date = datetime.strftime(a.date, "%Y-%m-%d %H:%M")"""
-
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 

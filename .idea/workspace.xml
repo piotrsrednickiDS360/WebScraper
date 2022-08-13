@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="creating filters, updating some stuff">
+    <list default="true" id="6035961f-8df5-435f-87d0-e7f62867ad61" name="Changes" comment="fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupport/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupport/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupportApp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TradingSupportApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -29,20 +35,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/zibi-/Desktop/WebScraperProject/TradingSupportApp/templates/TradingSupportApp"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\zibi-\Desktop\WebScraperProject\TradingSupportApp\templates\TradingSupportApp" />
-    </key>
-  </component>
+}</component>
   <component name="RunManager">
     <configuration name="WebScraperProject" type="Python.DjangoServer" factoryName="Django server">
       <module name="WebScraperProject" />
@@ -71,7 +72,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="" />
+      <changelist id="6035961f-8df5-435f-87d0-e7f62867ad61" name="Changes" comment="works bez dywidendy" />
       <created>1660151991632</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -81,6 +82,7 @@
       <workItem from="1660154561061" duration="5204000" />
       <workItem from="1660202985497" duration="1802000" />
       <workItem from="1660234600481" duration="945000" />
+      <workItem from="1660239710492" duration="6138000" />
     </task>
     <task id="LOCAL-00001" summary="database">
       <created>1660152578463</created>
@@ -103,28 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660164374533</updated>
     </task>
-    <task id="LOCAL-00004" summary="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników">
-      <created>1660235592701</created>
+    <task id="LOCAL-00004" summary="fix">
+      <created>1660305404557</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1660235592701</updated>
+      <updated>1660305404557</updated>
     </task>
-    <task id="LOCAL-00005" summary="creating filters, updating some stuff">
-      <created>1660303355740</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1660303355746</updated>
-    </task>
-    <task id="LOCAL-00006" summary="creating filters, updating some stuff">
-      <created>1660303826582</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1660303826582</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,7 +133,7 @@
     <MESSAGE value="database" />
     <MESSAGE value="simple changes (non-important)" />
     <MESSAGE value="Visual changes, adding filtercompanies.html, rozdzielenie wskaźników" />
-    <MESSAGE value="creating filters, updating some stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="creating filters, updating some stuff" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
 </project>
