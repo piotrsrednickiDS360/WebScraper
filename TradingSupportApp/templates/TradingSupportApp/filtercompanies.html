@@ -6,8 +6,8 @@
     <meta name="description" content="page">
     <link rel="stylesheet" type="text/css" href="{% static 'TradingSupportApp/style.css' %}">
     <title >{% block title %}Trading Support App{% endblock %}</title>
-
 </head>
+
 <style>
 .TopOfWindow{
     background-color: #333;
@@ -110,86 +110,88 @@
     font-size:24px;
     padding-top:12px;
 }
-.MainTable{
-}
 body{
     background:linear-gradient(45DEG,#2F1C53,#A46DFF,#F6D1Fd);
     margin:0;
 }
-/* unvisited link */
 a:link {
   color: #f2f2f2;
 }
-
-/* visited link */
 a:visited {
   color: #f2f2f2;
 }
-
-/* mouse over link */
 a:hover {
   color: red;
 }
-
-/* selected link */
 a:active {
   color: blue;
 }
 .forma{
+    margin-top:52px;
     background-color: #333;
 	color: #333;
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 0px;
 	border: 1px solid #54585d;
     text-align:center;
     width:25%;
     margin-left:auto;
     margin-right:auto;
+
+}
+.InputButton{
+    margin-bottom:25px;
+    margin-top:25px;
 }
 </style>
+
+
 <div class="TopOfWindow">{% block podtytulstrony %}Trading Support App Filter{% endblock %}</div>
 <body>
-{% if user.is_authenticated %}
-<div class="MainTable">{% block content %}<div class="forma">
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-    </form>
-</div>{% endblock %}</div>
-    <div class="LogOutButton">
-        {% block LogInButton %}
-            <a  href="{% url 'logout' %}">Logout</a>
-        {% endblock %}
-    </div>
-    <div class="FilterButton">
-        {% block FilterButton %}
-            <a  href="{% url 'filtercompanies' %}">Filter</a>
-        {% endblock %}
-    </div>
-    <div class="UnFilterButton">
-        {% block UnFilterButton %}
-            <a  href="{% url 'unfiltercompanies' %}">Unfilter</a>
-        {% endblock %}
-    </div>
-    <div class="MainButton">
-        {% block MainButton %}
-            <a  href="{% url 'mainpage' %}">Main</a>
-        {% endblock %}
-    </div>
-    <div class="LoggedAs">
-        {% block LoggedAs %}
-            <a>Logged as {{ user.username }}</a>
-        {% endblock %}
-    </div>
-{% else %}
-    <p >You are not logged in</p>
-    <div class="LogInButton">
-        {% block LogOutButton %}
-
-        <a  href="{% url 'login' %}">Login</a>
-        {% endblock %}
-    </div>
-{% endif %}
+    {% if user.is_authenticated %}
+        <div class="MainTable">
+            {% block content %}
+                <div class="forma">
+                    <form class="Form" action="" method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                        <input class="InputButton" type="submit" value="Submit">
+                    </form>
+                </div>
+            {% endblock %}
+        </div>
+        <div class="LogOutButton">
+            {% block LogInButton %}
+                <a  href="{% url 'logout' %}">Logout</a>
+            {% endblock %}
+        </div>
+        <div class="FilterButton">
+            {% block FilterButton %}
+                <a  href="{% url 'filtercompanies' %}">Filter</a>
+            {% endblock %}
+        </div>
+        <div class="UnFilterButton">
+            {% block UnFilterButton %}
+                <a  href="{% url 'unfiltercompanies' %}">Unfilter</a>
+            {% endblock %}
+        </div>
+        <div class="MainButton">
+            {% block MainButton %}
+                <a  href="{% url 'mainpage' %}">Main</a>
+            {% endblock %}
+        </div>
+        <div class="LoggedAs">
+            {% block LoggedAs %}
+                <a>Logged as {{ user.username }}</a>
+            {% endblock %}
+        </div>
+    {% else %}
+        <p >You are not logged in</p>
+        <div class="LogInButton">
+            {% block LogOutButton %}
+            <a  href="{% url 'login' %}">Login</a>
+            {% endblock %}
+        </div>
+    {% endif %}
 </body>
 </html>

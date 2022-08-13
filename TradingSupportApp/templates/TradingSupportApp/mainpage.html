@@ -5,7 +5,6 @@
 {% block podtytulstrony %}Trading Support App Main Page{% endblock %}
 {% block content %}
 <style>
-
 table {
     text-align:center;
 	border-collapse: collapse;
@@ -16,7 +15,6 @@ table td {
 	padding: 10px;
 }
 table thead th {
-
 	background-color: #54585d;
 	color: #ffffff;
 	font-weight: bold;
@@ -28,7 +26,6 @@ table tbody td {
 	border: 1px solid #dddfe1;
 }
 table tbody tr {
-
 	background-color: #f9fafb;}
 .Green{
     background-color: #04AA6D;
@@ -43,53 +40,39 @@ table tbody tr {
 }
 </style>
 
-    <table>
-        <thead>
+
+<table>
+    <thead>
+        <tr>
+            <th class="Green">firma</th>
+            <th>komunikaty</th>
+            {% for element in pointers_set %}
+                <th>{{ element }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for symbol,onedata in symbols_data  %}
             <tr>
-                <th class="Green">firma</th>
-                <th>komunikaty</th>
+                <td class="symbols">{{ symbol }}</td>
+                <td>
+                    {% for announcement in onedata.1 %}
+                        <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>
+                    {% endfor %}
+                </td>
                 {% for element in pointers_set %}
-                    <th>{{ element }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for symbol,onedata in symbols_data  %}
-                <tr>
-                    <td class="symbols">{{ symbol }}</td>
                     <td>
-                        {% for announcement in onedata.1 %}
-                            <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>
+                        {% for key,value in onedata.0.items %}
+                            {% if key == element %}
+                                <p>{{ value }}</p>
+                            {% endif %}
                         {% endfor %}
                     </td>
-                    {% for element in pointers_set %}
-                        <td>
-                            {% for key,value in onedata.0.items %}
-                                {% if key == element %}
-                                    <p>{{ value }}</p>
-                                {% endif %}
-                            {% endfor %}
-                        </td>
                 {% endfor %}
-                </tr>
-
-            {% endfor %}
-        </tbody>
-
-    </table>
-
-{#    {% for symbol in symbols  %}#}
-{#        <p>{{ symbol }}</p>#}
-{#        {% for  onedata in data.0 %}#}
-{#            <p>{{ onedata }}</p>#}
-{#        {% endfor %}#}
-{#        {% for pointer in data.1 %}#}
-{#            <p>{{ pointer }}</p>#}
-{#        {% endfor %}#}
-{#        {% for annoumcement in data.2 %}#}
-{#            <p>{{ annoumcement }}</p>#}
-{#        {% endfor %}#}
-{#    {% endfor %}#}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
 
 

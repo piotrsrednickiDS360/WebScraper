@@ -90,4 +90,4 @@ class UnFilterForm(forms.Form):
             print(e)
             unwantedCompanies = UnwantedCompanies.objects.filter(user=args[0].username).values('symbol').distinct()
         self.fields['symbol'] = forms.TypedChoiceField(
-            choices=[(i['symbol'], i['symbol']) for i in unwantedCompanies])
+            choices=[(i['symbol'], i['symbol']) for i in unwantedCompanies],label="Symbol")

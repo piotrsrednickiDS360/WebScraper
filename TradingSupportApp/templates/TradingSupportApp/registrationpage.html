@@ -3,12 +3,10 @@
 {% block title %}registration{% endblock %}
 {% block podtytulstrony %}Registration page{% endblock %}
 {% block content %}
-
     <div>
         <form action="" method="post">
             {% csrf_token %}
             {{form.as_p}}
-            <br/>
             <input type="submit" value="submit"/>
         </form>
     </div>
