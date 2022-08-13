@@ -14,8 +14,7 @@ def scrap():
     symbols = ["ASBIS", "AGORA", "ACTION", "AGROTON", "AIGAMES", "AILLERON", "ASSECOPOL"]
     data = []
     symbols_data = []
-    pointers_set = {}
-    pointers_set = set(pointers_set)
+    pointers_set = set({})
 
     for symbol in symbols:
         # wskaźniki giełdowe

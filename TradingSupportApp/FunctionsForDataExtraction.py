@@ -2,14 +2,6 @@ import lxml as lxml
 from bs4 import BeautifulSoup
 import requests
 
-
-def print_results(variable):
-    pass
-    # print("-----------------start---------------------")
-    # print(variable)
-    # print("-----------------end---------------------")
-
-
 def scrap_data_indexes(symbol):
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
     html_text = requests.get("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
@@ -21,7 +13,6 @@ def scrap_data_indexes(symbol):
         "").replace("\n\n", "\n").replace("\n\n", "\n").replace("SpÃ³Åka nie przynaleÅ¼y do Å¼adnego indeksu",
                                                                 "").replace("PrzynaleÅ¼noÅÄ do indeksÃ³w", "")
     indexes = "\n".join([line for line in indexes.split('\n') if line.strip() != ''])
-    # print_results(indexes)
     indexes = indexes.split(sep="\n")
 
     dicHelp = zip(indexes[::2], indexes[1::2])
@@ -43,7 +34,6 @@ def scrap_data_pointers(symbol):
     pointers = BeautifulSoup(pointers, 'lxml').text.replace("""WskaÅºniki gieÅdowe\n\n\n\n\n\n\n""", "").replace(
         "\n\n", "\n").replace("zÅ", "PLN")
     pointers = "\n".join([line for line in pointers.split('\n') if line.strip() != ''])
-    # print_results(pointers)
     pointers = pointers.split(sep="\n")
 
     dicHelp = zip(pointers[::2], pointers[1::2])
