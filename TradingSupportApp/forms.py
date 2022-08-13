@@ -51,14 +51,17 @@ class FilterForm(forms.Form):
         super(FilterForm, self).__init__(*args, **kwargs)
         print(args)
         print(kwargs)
-        unwantedCompanies = UnwantedCompanies.objects.filter(user=args[1].username).values('symbol').distinct()
+        try:
+            unwantedCompanies = UnwantedCompanies.objects.filter(user=args[1].username).values('symbol').distinct()
+        except Exception as e:
+            print(e)
+            unwantedCompanies = UnwantedCompanies.objects.filter(user=args[0].username).values('symbol').distinct()
         companies = []
         for symbol in Company.objects.all().values('symbol').distinct():
             if symbol not in unwantedCompanies:
                 companies.append(symbol)
         self.fields['symbol'] = forms.TypedChoiceField(
             choices=[(i['symbol'], i['symbol']) for i in companies])
-
 
     """def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,13 +76,18 @@ class FilterForm(forms.Form):
 
 
 class UnFilterForm(forms.Form):
-    #name_choices = [(i['symbol'], i['symbol']) for i in
-                    #UnwantedCompanies.objects.all().values('symbol').distinct()]
+    # name_choices = [(i['symbol'], i['symbol']) for i in
+    # UnwantedCompanies.objects.all().values('symbol').distinct()]
     symbol = forms.TypedChoiceField()
+
     def __init__(self, *args, **kwargs):
         super(UnFilterForm, self).__init__(*args, **kwargs)
         print(args)
         print(kwargs)
-        unwantedCompanies = UnwantedCompanies.objects.filter(user=args[1].username).values('symbol').distinct()
+        try:
+            unwantedCompanies = UnwantedCompanies.objects.filter(user=args[1].username).values('symbol').distinct()
+        except Exception as e:
+            print(e)
+            unwantedCompanies = UnwantedCompanies.objects.filter(user=args[0].username).values('symbol').distinct()
         self.fields['symbol'] = forms.TypedChoiceField(
             choices=[(i['symbol'], i['symbol']) for i in unwantedCompanies])
