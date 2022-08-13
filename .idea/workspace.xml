@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="last touches to filtering visuals, cleaning html and css so that it is visually appealing">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TradingSupportApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/TradingSupportApp/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="96f06cec-3d3d-46db-ba30-d1699e6f0f24" name="Changes" comment="Cleaning python files" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,7 +79,7 @@
       <workItem from="1660239710492" duration="6138000" />
       <workItem from="1660399144302" duration="1654000" />
       <workItem from="1660408378162" duration="2029000" />
-      <workItem from="1660410515119" duration="465000" />
+      <workItem from="1660410515119" duration="644000" />
     </task>
     <task id="LOCAL-00001" summary="database">
       <created>1660152578463</created>
@@ -142,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660410416898</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Cleaning python files">
+      <created>1660411154475</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1660411154475</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +170,7 @@
     <MESSAGE value="Updating filter styles, making the app user-based" />
     <MESSAGE value="hiding errors" />
     <MESSAGE value="last touches to filtering visuals, cleaning html and css so that it is visually appealing" />
-    <option name="LAST_COMMIT_MESSAGE" value="last touches to filtering visuals, cleaning html and css so that it is visually appealing" />
+    <MESSAGE value="Cleaning python files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleaning python files" />
   </component>
 </project>
