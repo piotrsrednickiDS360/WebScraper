@@ -44,11 +44,42 @@ class CreateUserForm(UserCreationForm):
 
 
 class FilterForm(forms.Form):
-    name_choices = [(i['symbol'], i['symbol']) for i in Company.objects.filter(wanted=True).values('symbol').distinct()]
-    symbol = forms.TypedChoiceField(choices=name_choices)
+    # name_choices = [(i['symbol'], i['symbol']) for i in Company.objects.filter(wanted=True).values('symbol').distinct()]
+    symbol = forms.TypedChoiceField()
+
+    def __init__(self, *args, **kwargs):
+        super(FilterForm, self).__init__(*args, **kwargs)
+        print(args)
+        print(kwargs)
+        unwantedCompanies = UnwantedCompanies.objects.filter(user=args[1].username).values('symbol').distinct()
+        companies = []
+        for symbol in Company.objects.all().values('symbol').distinct():
+            if symbol not in unwantedCompanies:
+                companies.append(symbol)
+        self.fields['symbol'] = forms.TypedChoiceField(
+            choices=[(i['symbol'], i['symbol']) for i in companies])
+
+
+    """def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        user = self.kwargs.get('user')
+        if user:
+            unwantedCompanies=UnwantedCompanies.objects.filter(user=user.userame).values('symbol').distinct()
+            companies=[]
+            for company in Company.objects.all():
+                if company.symbol not in  unwantedCompanies:
+                    companies.append(company.symbol)
+            self.fields['symbol'].queryset = companies"""
 
 
 class UnFilterForm(forms.Form):
-    name_choices = [(i['symbol'], i['symbol']) for i in
-                    Company.objects.filter(wanted=False).values('symbol').distinct()]
-    symbol = forms.TypedChoiceField(choices=name_choices)
+    #name_choices = [(i['symbol'], i['symbol']) for i in
+                    #UnwantedCompanies.objects.all().values('symbol').distinct()]
+    symbol = forms.TypedChoiceField()
+    def __init__(self, *args, **kwargs):
+        super(UnFilterForm, self).__init__(*args, **kwargs)
+        print(args)
+        print(kwargs)
+        unwantedCompanies = UnwantedCompanies.objects.filter(user=args[1].username).values('symbol').distinct()
+        self.fields['symbol'] = forms.TypedChoiceField(
+            choices=[(i['symbol'], i['symbol']) for i in unwantedCompanies])

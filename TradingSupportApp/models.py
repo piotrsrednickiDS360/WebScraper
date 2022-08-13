@@ -7,6 +7,12 @@ class Company(models.Model):
     wanted = models.BooleanField(default=True)
 
 
+class UnwantedCompanies(models.Model):
+    symbol = models.CharField(max_length=10)
+    wanted = models.BooleanField(default=False)
+    user = models.CharField(max_length=30)
+
+
 class Indexes(models.Model):
     name = models.CharField(max_length=10)
     value = models.CharField(max_length=10)

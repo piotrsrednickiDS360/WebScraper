@@ -6,7 +6,7 @@ from django.template import loader
 
 from .FunctionsForDataExtraction import scrap_symbols
 from .forms import LoginForm, FilterForm, UnFilterForm
-from .models import Company
+from .models import Company, UnwantedCompanies
 # Create your views here.
 from .tasks import scrap
 
@@ -41,34 +41,42 @@ def mainpage(request):
 
 def filtercompanies(request):
     # Company.objects.all().update(wanted=True)
-    if request.method == 'POST':
-        form = FilterForm(request.POST)
-    else:
-        form = FilterForm()
 
-    if form.is_valid():
-        template = loader.get_template('TradingSupportApp/filtercompanies.html')
-        Company.objects.filter(symbol=form.cleaned_data['symbol']).update(wanted=False)
-        return render(request, 'TradingSupportApp/filtercompanies.html', {"form": FilterForm()})
+    if request.method == 'POST':
+        form = FilterForm(request.POST,request.user)
+        if form.is_valid():
+            template = loader.get_template('TradingSupportApp/filtercompanies.html')
+            company = Company.objects.filter(symbol=form.cleaned_data['symbol'])
+            print(Company.objects.count())
+            unwantedCompany = UnwantedCompanies(UnwantedCompanies.objects.count(), form.cleaned_data['symbol'], False,
+                                                user=request.user.username)
+            unwantedCompany.save()
+            if Company.objects.filter(symbol=form.cleaned_data['symbol']).count() == 0:
+                return render(request, 'TradingSupportApp/filtercompanies.html',
+                              {"form": FilterForm(request.POST,request.user)})
+            return render(request, 'TradingSupportApp/filtercompanies.html',
+                          {"form": FilterForm(request.POST,request.user)})
     else:
-        template = loader.get_template('TradingSupportApp/filtercompanies.html')
-        return render(request, 'TradingSupportApp/filtercompanies.html', {"form": FilterForm()})
+        form = FilterForm(request.POST, request.user)
+
+    template = loader.get_template('TradingSupportApp/filtercompanies.html')
+    return render(request, 'TradingSupportApp/filtercompanies.html', {"form": FilterForm(request.POST,request.user)})
 
 
 def unfiltercompanies(request):
     # Company.objects.all().update(wanted=True)
     if request.method == 'POST':
-        form = UnFilterForm(request.POST)
+        form = UnFilterForm(request.POST,request.user)
     else:
-        form = UnFilterForm()
+        form = UnFilterForm(request.POST,request.user)
 
     if form.is_valid():
         template = loader.get_template('TradingSupportApp/unfiltercompanies.html')
-        Company.objects.filter(symbol=form.cleaned_data['symbol']).update(wanted=True)
-        return render(request, 'TradingSupportApp/unfiltercompanies.html', {"form": UnFilterForm()})
+        UnwantedCompanies.objects.filter(symbol=form.cleaned_data['symbol'],user=request.user).delete()
+        return render(request, 'TradingSupportApp/unfiltercompanies.html', {"form": UnFilterForm(request.POST,request.user)})
     else:
         template = loader.get_template('TradingSupportApp/unfiltercompanies.html')
-        return render(request, 'TradingSupportApp/unfiltercompanies.html', {"form": UnFilterForm()})
+        return render(request, 'TradingSupportApp/unfiltercompanies.html', {"form": UnFilterForm(request.POST,request.user)})
 
 
 def registrationpage(request):
