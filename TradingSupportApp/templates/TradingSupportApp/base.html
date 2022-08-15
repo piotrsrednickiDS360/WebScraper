@@ -9,155 +9,117 @@
 
 </head>
 <style>
-.TopOfWindow{
-    background-color: #333;
-    border-color: #340744;
-    color:#f2f2f2;
-    position:fixed;
-    top:0;
-    width:100%;
-    z-index:100;
-    text-align: center;
-    font-size: 20px;
-    font-family: Tahoma, Geneva, sans-serif;
-    padding: 14px 16px;
+
+    .TopOfWindow{
+        background-color: #333;
+        border-color: #340744;
+        color:#f2f2f2;
+        position:fixed;
+        top:0;
+        width:100%;
+        z-index:100;
+        text-align: center;
+        font-size: 20px;
+        font-family: Tahoma, Geneva, sans-serif;
+        padding: 14px 16px;
     }
-.LogInButton,.LogOutButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-}
-.FilterButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-    margin-right:210px;
-}
-.UnFilterButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-    margin-right:315px;
-}
-.MainButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-    margin-right:105px;
-}
-.LoggedAs{
-    border-right-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-}
-.MainTable{
-    margin-top:52px;
-}
-body{
-    background:linear-gradient(45DEG,#2F1C53,#A46DFF,#F6D1Fd);
-    margin:0;
-}
-/* unvisited link */
-a:link {
-  color: #f2f2f2;
-}
 
-/* visited link */
-a:visited {
-  color: #f2f2f2;
-}
+    .btn {
+        border-left-style:solid;
+        border-width:5px;
+        border-color:#54585d;
+        position: fixed;
+        z-index:101;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 40px;
+        background-color: #522d5b;
+        text-align:center;
+        background-color: #333;
+        color:#f2f2f2;
+        font-size:24px;
+        padding-top:12px;
+    }
 
-/* mouse over link */
-a:hover {
-  color: red;
-}
+    .FilterButton{
+        margin-right:210px;
+    }
 
-/* selected link */
-a:active {
-  color: blue;
-}
+    .UnFilterButton{
+        margin-right:315px;
+    }
+
+    .MainButton{
+        margin-right:105px;
+    }
+
+    .LoggedAs{
+        border-right-style:solid;
+        border-width:5px;
+        border-color:#54585d;
+        position: fixed;
+        z-index:101;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 40px;
+        background-color: #522d5b;
+        text-align:center;
+        background-color: #333;
+        color:#f2f2f2;
+        font-size:24px;
+        padding-top:12px;
+    }
+    .MainTable{
+        margin-top:52px;
+    }
+    body{
+        background:linear-gradient(45DEG,#2F1C53,#A46DFF,#F6D1Fd);
+        min-height: 100vh;
+        margin:0;
+    }
+    /* unvisited link */
+    a:link {
+      color: #f2f2f2;
+    }
+
+    /* visited link */
+    a:visited {
+      color: #f2f2f2;
+    }
+
+    /* mouse over link */
+    a:hover {
+      color: red;
+    }
+
+    /* selected link */
+    a:active {
+      color: blue;
+    }
 </style>
 <body>
 <div class="TopOfWindow">{% block podtytulstrony %}{% endblock %}</div>
 </body>
 {% if user.is_authenticated %}
 <div class="MainTable">{% block content %}{% endblock %}</div>
-    <div class="LogOutButton">
+    <div class="LogOutButton btn">
         {% block LogInButton %}
             <a  href="{% url 'logout' %}">Logout</a>
         {% endblock %}
     </div>
-    <div class="FilterButton">
+    <div class="FilterButton btn">
         {% block FilterButton %}
             <a  href="{% url 'filtercompanies' %}">Filter</a>
         {% endblock %}
     </div>
-    <div class="UnFilterButton">
+    <div class="UnFilterButton btn">
         {% block UnFilterButton %}
             <a  href="{% url 'unfiltercompanies' %}">Unfilter</a>
         {% endblock %}
     </div>
-    <div class="MainButton">
+    <div class="MainButton btn">
         {% block MainButton %}
             <a  href="{% url 'mainpage' %}">Main</a>
         {% endblock %}
@@ -169,7 +131,7 @@ a:active {
     </div>
 {% else %}
     <p >You are not logged in</p>
-    <div class="LogInButton">
+    <div class="LogInButton btn">
         {% block LogOutButton %}
 
         <a  href="{% url 'login' %}">Login</a>
