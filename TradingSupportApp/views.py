@@ -22,8 +22,16 @@ def homepage(request):
 
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
-    symbols = scrap_symbols()
+    # symbols = scrap_symbols()
+    symbols = []
     symbols_data, pointers_set = scrap()
+    companies = Company.objects.all()
+    for company in companies:
+        symbols.append(company.symbol)
+
+    for symbol in symbols:
+
+    #print(symbols)
     # print("-----------\n")
     # for a in symbols_data[0][1][1]:
     #     print(a.date, '\n')
