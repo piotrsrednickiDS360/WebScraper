@@ -11,10 +11,8 @@ from TradingSupportApp.models import *
 
 def scrap():
     symbols = scrap_symbols()
-    symbols = ["ASBIS", "AGORA", "ACTION", "AGROTON", "AIGAMES", "AILLERON", "ASSECOPOL", "PMPG"]
     data = []
     symbols_data = []
-    pointers_set = set({})
 
     for symbol in symbols:
         # wskaźniki giełdowe
@@ -22,22 +20,12 @@ def scrap():
         if len(announcements)==0:
             continue
         pointers = scrap_data_pointers(symbol)
-
-        pointers_copy = pointers.copy()  # bez dywidendy
-        for key in pointers:
-            if "Dywidenda" in key and "Dywidenda (%)" not in key:
-                pointers_set.add("Dywidenda")
-                pointers_copy["Dywidenda"] = pointers_copy.pop(key)
-            else:
-                pointers_set.add(key)
-
-        symbols_data.append([symbol, [pointers_copy, announcements]])
-
+        symbols_data.append([symbol, [pointers, announcements]])
     # print("pointers:", type(pointers))
     delete_older_function()
     save_function(symbols_data)
     #print(symbols_data)
-    return symbols_data, pointers_set
+    return symbols_data
 
 
 def save_function(symbols_data):
