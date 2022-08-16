@@ -80,6 +80,7 @@
       <workItem from="1660399144302" duration="1654000" />
       <workItem from="1660408378162" duration="2029000" />
       <workItem from="1660410515119" duration="644000" />
+      <workItem from="1660421395019" duration="123000" />
     </task>
     <task id="LOCAL-00001" summary="database">
       <created>1660152578463</created>
@@ -144,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660411154475</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Cleaning python files">
+      <created>1660421483606</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1660421483606</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
