@@ -8,10 +8,12 @@ from .models import Company, UnwantedCompanies, Pointers, Announcements
 # Create your views here.
 from .tasks import scrap
 
+
 class AnnouncementDTO:
     def __init__(self, date, text):
         self.date = date
         self.text = text
+
 
 def homepage(request):
     if request.method == 'POST':
@@ -29,30 +31,43 @@ def mainpage(request):
     symbols = []
     symbols_data = []
     companies = Company.objects.all()
-    #getting companies
+    # getting companies
     for company in companies:
         symbols.append(company.symbol)
     pointers_set = set({})
-
+    unwanted = []
+    # ignoring unwanted companies
+    unwantedCompanies = UnwantedCompanies.objects.filter(user=request.user).values("symbol")
+    for unwanteCompany in unwantedCompanies:
+        unwanted.append(unwanteCompany["symbol"])
+    print(unwanted)
     for symbol in symbols:
+        # filtering
+        if symbol in unwanted:
+            continue
         # getting pointers and announcements from database and changing their representation,
-        pointers = {}
         announcements = []
-        pointers_list = list(Pointers.objects.filter(company=Company.objects.get(symbol=symbol)).values("name","value"))
-        for pointer in pointers_list:
-            pointers[pointer["name"]]=pointer["value"]
-        announcements_list = list(Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
+        announcements_list = list(
+            Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
         date_list = list(
             Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("date"))
 
-        #change type of data in announcements
+        # change type of data in announcements
         for (text, date) in zip(announcements_list, date_list):
             announcementText = text
             a = AnnouncementDTO(date['date'], announcementText['text'])
             # a = AnnouncementDTO(date.text, announcementText) # date without formating
             announcements.append(a)
+        if len(announcements) == 0:
+            continue
 
-        #create a set of data being the header of a table
+        pointers = {}
+        pointers_list = list(
+            Pointers.objects.filter(company=Company.objects.get(symbol=symbol)).values("name", "value"))
+        for pointer in pointers_list:
+            pointers[pointer["name"]] = pointer["value"]
+
+        # create a set of data being the header of a table
         pointers_copy = pointers.copy()  # bez dywidendy
         for key in pointers:
             if "Dywidenda" in key and "Dywidenda (%)" not in key:
@@ -60,7 +75,7 @@ def mainpage(request):
                 pointers_copy["Dywidenda"] = pointers_copy.pop(key)
             else:
                 pointers_set.add(key)
-        #add data to list
+        # add data to list
         symbols_data.append([symbol, [pointers_copy, announcements]])
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})

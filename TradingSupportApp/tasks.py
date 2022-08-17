@@ -17,8 +17,6 @@ def scrap():
     for symbol in symbols:
         # wskaźniki giełdowe
         announcements = scrap_data_announcements(symbol)
-        if len(announcements)==0:
-            continue
         pointers = scrap_data_pointers(symbol)
         symbols_data.append([symbol, [pointers, announcements]])
     # print("pointers:", type(pointers))
