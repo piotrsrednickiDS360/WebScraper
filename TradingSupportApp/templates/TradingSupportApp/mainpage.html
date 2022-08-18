@@ -6,11 +6,6 @@
 {% block content %}
 <style>
 
-    .fixTableHead {
-        {#overflow-y: auto;#}
-        {#min-height: 100vh;#}
-    }
-
     table {
         text-align: center;
         border-collapse: collapse;
@@ -62,10 +57,18 @@
         text-align: left;
     }
 
-    .symbols{
-        color:forestgreen;
+    .symbol{
+        color: #636363;
         font-weight:bold;
+        text-decoration: none;
     }
+
+    .symbol:hover {
+        color: #04AA6D;
+    }
+
+
+
 
 </style>
 
@@ -83,7 +86,11 @@
             <tbody>
                 {% for symbol,onedata in symbols_data  %}
                     <tr>
-                        <td class="symbols">{{ symbol }}</td>
+                        <td>
+                            {% with  link="https://www.bankier.pl/inwestowanie/profile/quote.html?symbol=" %}
+                                <a class="symbol" href={{ link|add:symbol }}> {{ symbol }} </a>
+                            {% endwith %}
+                        </td>
                         <td class="announcements-td">
                             {% for announcement in onedata.1 %}
                                 <p class="announcements-date">{{ announcement.date}} :</p>

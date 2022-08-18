@@ -22,77 +22,36 @@
     font-family: Tahoma, Geneva, sans-serif;
     padding: 14px 16px;
     }
-.LogInButton,.LogOutButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-}
-.FilterButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-    margin-right:210px;
-}
-.UnFilterButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-    margin-right:315px;
-}
-.MainButton{
-    border-left-style:solid;
-    border-width:5px;
-    border-color:#54585d;
-    position: fixed;
-    z-index:101;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 40px;
-    background-color: #522d5b;
-    text-align:center;
-    background-color: #333;
-    color:#f2f2f2;
-    font-size:24px;
-    padding-top:12px;
-    margin-right:105px;
-}
+
+    .btn {
+        border-left-style:solid;
+        border-width:5px;
+        border-color:#54585d;
+        position: fixed;
+        z-index:101;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 40px;
+        background-color: #522d5b;
+        text-align:center;
+        background-color: #333;
+        color:#f2f2f2;
+        font-size:24px;
+        padding-top:12px;
+    }
+
+    .FilterButton{
+        margin-right:210px;
+    }
+
+    .UnFilterButton{
+        margin-right:315px;
+    }
+
+    .MainButton{
+        margin-right:105px;
+    }
 .LoggedAs{
     border-right-style:solid;
     border-width:5px;
@@ -109,10 +68,6 @@
     color:#f2f2f2;
     font-size:24px;
     padding-top:12px;
-}
-body{
-    background:linear-gradient(45DEG,#2F1C53,#A46DFF,#F6D1Fd);
-    margin:0;
 }
 a:link {
   color: #f2f2f2;
@@ -160,22 +115,22 @@ a:active {
                 </div>
             {% endblock %}
         </div>
-        <div class="LogOutButton">
+        <div class="LogOutButton btn">
             {% block LogInButton %}
                 <a  href="{% url 'logout' %}">Logout</a>
             {% endblock %}
         </div>
-        <div class="FilterButton">
+        <div class="FilterButton btn">
             {% block FilterButton %}
                 <a  href="{% url 'filtercompanies' %}">Filter</a>
             {% endblock %}
         </div>
-        <div class="UnFilterButton">
+        <div class="UnFilterButton btn">
             {% block UnFilterButton %}
                 <a  href="{% url 'unfiltercompanies' %}">Unfilter</a>
             {% endblock %}
         </div>
-        <div class="MainButton">
+        <div class="MainButton btn">
             {% block MainButton %}
                 <a  href="{% url 'mainpage' %}">Main</a>
             {% endblock %}
