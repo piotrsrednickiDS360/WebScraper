@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
-
+from datetime import datetime, timedelta
 from .FunctionsForDataExtraction import scrap_symbols
 from .forms import LoginForm, FilterForm, UnFilterForm
 from .models import Company, UnwantedCompanies, Pointers, Announcements
@@ -57,7 +57,14 @@ def mainpage(request):
             announcementText = text
             a = AnnouncementDTO(date['date'], announcementText['text'])
             # a = AnnouncementDTO(date.text, announcementText) # date without formating
+
+            # Filter announcements older than 30 days
+            time_between_insertion = datetime.now().date() - a.date
+            if time_between_insertion.days > 30:
+                continue
+
             announcements.append(a)
+
         if len(announcements) == 0:
             continue
 
