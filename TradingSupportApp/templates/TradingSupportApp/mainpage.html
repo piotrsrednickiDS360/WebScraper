@@ -54,8 +54,22 @@
         width: 250px;
     }
 
+
+    .announcements-td {
+        text-align: center;
+    }
+
     .announcements-td p {
-        display: inline;
+        display: inline-block;
+        margin: 4px 0;
+    }
+
+    .announcements-date {
+        width: 120px;
+        text-align: right;
+    }
+
+    announcements-text {
         text-align: left;
     }
 
@@ -83,7 +97,9 @@
                         <td class="symbols">{{ symbol }}</td>
                         <td class="announcements-td">
                             {% for announcement in onedata.1 %}
-                                <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>
+                                <p class="announcements-date">{{ announcement.date}} :</p>
+                                <p class="announcements-text">{{announcement.text}}</p>
+{#                                <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>#}
                                 <br>
                             {% endfor %}
                         </td>
