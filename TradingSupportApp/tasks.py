@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
     scrap_data_pointers, \
-    scrap_symbols
+    scrap_symbols,scrap_data_names
 from bs4 import BeautifulSoup
 
 from TradingSupportApp.models import *
@@ -18,7 +18,8 @@ def scrap():
         # wskaźniki giełdowe
         announcements = scrap_data_announcements(symbol)
         pointers = scrap_data_pointers(symbol)
-        symbols_data.append([symbol, [pointers, announcements]])
+        name=scrap_data_names(symbol)
+        symbols_data.append([symbol, [pointers, announcements],name])
     # print("pointers:", type(pointers))
     delete_older_function()
     save_function(symbols_data)

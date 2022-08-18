@@ -67,5 +67,6 @@ class UnFilterForm(forms.Form):
         except Exception as e:
             print(e)
             unwantedCompanies = UnwantedCompanies.objects.filter(user=args[0].username).values('symbol').distinct()
-        self.fields['symbol'] = forms.TypedChoiceField(
+        self.fields['symbol'] = forms.Selec(
             choices=[(i['symbol'], i['symbol']) for i in unwantedCompanies],label="Symbol")
+
