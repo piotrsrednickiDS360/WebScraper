@@ -61,13 +61,15 @@
         color: #636363;
         font-weight:bold;
         text-decoration: none;
+        padding:15px;
     }
 
     .symbol:hover {
         color: #04AA6D;
     }
-
-
+    .symbol-td{
+        width:20%;
+    }
 
 
 </style>
@@ -86,10 +88,10 @@
             <tbody>
                 {% for symbol,onedata,name in symbols_data  %}
                     <tr>
-                        <td>
+                        <td class="symbol-td">
                             {% with  link="https://www.bankier.pl/inwestowanie/profile/quote.html?symbol=" %}
                                 <a class="symbol" href={{ link|add:symbol }}> {{ symbol }} </a>
-                                <p>{{ name }}</p>
+                                <p class="name">{{ name }}</p>
                             {% endwith %}
                         </td>
                         <td class="announcements-td">

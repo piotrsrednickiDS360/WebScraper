@@ -53,11 +53,14 @@ def scrap_data_pointers(symbol):
 
     return pointersDic
 
-
+from bs4.dammit import EncodingDetector
 def scrap_data_names(symbol):
     html_text_announcements = requests.get(
-        "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol)).text
-    soup = BeautifulSoup(html_text_announcements, 'lxml')
+        "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
+    http_encoding = html_text_announcements.encoding if 'charset' in html_text_announcements.headers.get('content-type', '').lower() else None
+    html_encoding = EncodingDetector.find_declared_encoding(html_text_announcements.content, is_html=True)
+    encoding = html_encoding or http_encoding
+    soup = BeautifulSoup(html_text_announcements.content, 'lxml',from_encoding=encoding)
     name = soup.find_all('a', class_="profilHead")
     name = name[0].text
     name = "\n".join([line for line in name.split('\n') if line.strip() != ''])
