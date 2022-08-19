@@ -13,16 +13,14 @@ class UnwantedCompanies(models.Model):
     user = models.CharField(max_length=30)
 
 
-class Indexes(models.Model):
-    name = models.CharField(max_length=10)
-    value = models.CharField(max_length=10)
 
 
 class Pointers(models.Model):
     name = models.CharField(max_length=10)
     value = models.CharField(max_length=10)
-
+    company=models.ForeignKey(Company, on_delete=models.CASCADE)
 
 class Announcements(models.Model):
     date = models.DateField()
     text = models.CharField(max_length=10)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
