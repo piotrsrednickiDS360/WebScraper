@@ -71,38 +71,40 @@
         font-size:24px;
         padding-top:12px;
     }
+
     .MainTable{
         margin-top:52px;
     }
+
     body{
-        background:linear-gradient(45DEG,#2F1C53,#A46DFF,#F6D1Fd);
+        background-color: #f9fafb;
         min-height: 100vh;
         margin:0;
+
     }
     /* unvisited link */
-    a:link {
+    .btn a:link {
       color: #f2f2f2;
     }
 
     /* visited link */
-    a:visited {
+    .btn a:visited {
       color: #f2f2f2;
     }
 
     /* mouse over link */
-    a:hover {
+    .btn a:hover {
       color: red;
     }
 
     /* selected link */
-    a:active {
+    .btn a:active {
       color: blue;
     }
 </style>
+
 <body>
-<div class="TopOfWindow">{% block podtytulstrony %}{% endblock %}</div>
-</body>
-{% if user.is_authenticated %}
+    {% if user.is_authenticated %}
 <div class="MainTable">{% block content %}{% endblock %}</div>
     <div class="LogOutButton btn">
         {% block LogInButton %}
@@ -138,4 +140,12 @@
         {% endblock %}
     </div>
 {% endif %}
+
+    <div class="TopOfWindow">{% block podtytulstrony %}{% endblock %}
+
+
+    </div>
+</body>
+
+
 </html>
