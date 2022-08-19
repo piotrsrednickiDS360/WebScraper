@@ -8,13 +8,14 @@ from .models import Company, UnwantedCompanies, Pointers, Announcements
 # Create your views here.
 from .tasks import scrap
 
+from django.views.decorators.csrf import csrf_exempt
 
 class AnnouncementDTO:
     def __init__(self, date, text):
         self.date = date
         self.text = text
 
-
+@csrf_exempt
 def homepage(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -25,7 +26,7 @@ def homepage(request):
     form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})
 
-
+@csrf_exempt
 def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
     symbols = []
@@ -87,7 +88,7 @@ def mainpage(request):
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 
-
+@csrf_exempt
 def filtercompanies(request):
     if request.method == 'POST':
         form = FilterForm(request.POST, request.user)
@@ -108,7 +109,7 @@ def filtercompanies(request):
     template = loader.get_template('TradingSupportApp/filtercompanies.html')
     return render(request, 'TradingSupportApp/filtercompanies.html', {"form": FilterForm(request.POST, request.user)})
 
-
+@csrf_exempt
 def unfiltercompanies(request):
     # Company.objects.all().update(wanted=True)
     if request.method == 'POST':
@@ -125,7 +126,7 @@ def unfiltercompanies(request):
         return render(request, 'TradingSupportApp/unfiltercompanies.html',
                       {"form": UnFilterForm(request.POST, request.user)})
 
-
+@csrf_exempt
 def registrationpage(request):
     """
     #a registration form if it was ever needed
@@ -137,7 +138,7 @@ def registrationpage(request):
     return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})"""
     return render(request, 'TradingSupportApp/registrationpage.html')
 
-
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
