@@ -104,9 +104,9 @@ def filtercompanies(request):
             template = loader.get_template('TradingSupportApp/filtercompanies.html')
             company = Company.objects.filter(symbol=form.cleaned_data['symbol'])
             print(Company.objects.count())
-            name = Company.objects.get(symbol=form.cleaned_data['symbol']).values("name")
+            name = Company.objects.get(symbol=form.cleaned_data['symbol']).name
             unwantedCompany = UnwantedCompanies(UnwantedCompanies.objects.count(), form.cleaned_data['symbol'], False,
-                                                name["name"],
+                                                name,
                                                 user=request.user.username)
             unwantedCompany.save()
             if Company.objects.filter(symbol=form.cleaned_data['symbol']).count() == 0:
