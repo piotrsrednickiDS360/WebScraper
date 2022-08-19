@@ -60,7 +60,6 @@ body{
         <h1 class="TopOfWindow">Trading Support App<div>{% block podtytulstrony %}Login Screen{% endblock %}</div></h1>
         <div class="formularz">
             <form method="POST">
-                {% csrf_token %}
                 <div class="form-group">
                     <p class="Authentication">Username</p>
                     <p class="Authentication">{{ form.username }}</p>
