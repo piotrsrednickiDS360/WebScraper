@@ -43,7 +43,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -130,3 +130,7 @@ LOGOUT_REDIRECT_URL = "mainpage"
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
 CSRF_COOKIE_DOMAIN = None
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+DCS_SESSION_COOKIE_SAMESITE = "None"

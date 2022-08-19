@@ -10,10 +10,12 @@ from .tasks import scrap
 
 from django.views.decorators.csrf import csrf_exempt
 
+
 class AnnouncementDTO:
     def __init__(self, date, text):
         self.date = date
         self.text = text
+
 
 @csrf_exempt
 def homepage(request):
@@ -25,6 +27,7 @@ def homepage(request):
             return render(request, 'TradingSupportApp/mainpage.html', {'form': form})
     form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})
+
 
 @csrf_exempt
 def mainpage(request):
@@ -88,6 +91,7 @@ def mainpage(request):
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 
+
 @csrf_exempt
 def filtercompanies(request):
     if request.method == 'POST':
@@ -109,6 +113,7 @@ def filtercompanies(request):
     template = loader.get_template('TradingSupportApp/filtercompanies.html')
     return render(request, 'TradingSupportApp/filtercompanies.html', {"form": FilterForm(request.POST, request.user)})
 
+
 @csrf_exempt
 def unfiltercompanies(request):
     # Company.objects.all().update(wanted=True)
@@ -126,6 +131,7 @@ def unfiltercompanies(request):
         return render(request, 'TradingSupportApp/unfiltercompanies.html',
                       {"form": UnFilterForm(request.POST, request.user)})
 
+
 @csrf_exempt
 def registrationpage(request):
     """
@@ -137,6 +143,7 @@ def registrationpage(request):
             return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})
     return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})"""
     return render(request, 'TradingSupportApp/registrationpage.html')
+
 
 @csrf_exempt
 def login(request):
