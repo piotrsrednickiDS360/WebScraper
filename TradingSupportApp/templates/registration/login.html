@@ -26,8 +26,7 @@
     }
 body{
     margin:0;
-    background:linear-gradient(45DEG,#2F1C53,#A46DFF,#F6D1Fd);
-    min-height: 100vh;
+    background-color: #f9fafb;
 }
 .formularz{
     margin-top:76px;
@@ -60,6 +59,7 @@ body{
         <h1 class="TopOfWindow">Trading Support App<div>{% block podtytulstrony %}Login Screen{% endblock %}</div></h1>
         <div class="formularz">
             <form method="POST">
+                {% csrf_token %}
                 <div class="form-group">
                     <p class="Authentication">Username</p>
                     <p class="Authentication">{{ form.username }}</p>
