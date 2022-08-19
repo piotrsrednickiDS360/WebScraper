@@ -36,7 +36,6 @@ def mainpage(request):
     symbols = []
     symbols_data = []
     names = []
-    scrap()
     companies = Company.objects.all()
     # getting companies
     for company in companies:
