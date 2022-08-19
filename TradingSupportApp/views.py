@@ -12,9 +12,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 class AnnouncementDTO:
-    def __init__(self, date, text):
+    def __init__(self, date, text, link):
         self.date = date
         self.text = text
+        self.link = link
 
 
 @csrf_exempt
@@ -34,18 +35,20 @@ def mainpage(request):
     template = loader.get_template('TradingSupportApp/mainpage.html')
     symbols = []
     symbols_data = []
+    names = []
     companies = Company.objects.all()
     # getting companies
     for company in companies:
         symbols.append(company.symbol)
+    for company in companies:
+        names.append(company.name)
     pointers_set = set({})
     unwanted = []
     # ignoring unwanted companies
     unwantedCompanies = UnwantedCompanies.objects.filter(user=request.user).values("symbol")
     for unwanteCompany in unwantedCompanies:
         unwanted.append(unwanteCompany["symbol"])
-    print(unwanted)
-    for symbol in symbols:
+    for symbol, name in zip(symbols, names):
         # filtering
         if symbol in unwanted:
             continue
@@ -55,11 +58,12 @@ def mainpage(request):
             Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
         date_list = list(
             Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("date"))
-
+        link_list = list(
+            Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("link"))
         # change type of data in announcements
-        for (text, date) in zip(announcements_list, date_list):
+        for (text, date, link) in zip(announcements_list, date_list, link_list):
             announcementText = text
-            a = AnnouncementDTO(date['date'], announcementText['text'])
+            a = AnnouncementDTO(date['date'], announcementText['text'],link["link"])
             # a = AnnouncementDTO(date.text, announcementText) # date without formating
 
             # Filter announcements older than 30 days
@@ -87,7 +91,7 @@ def mainpage(request):
             else:
                 pointers_set.add(key)
         # add data to list
-        symbols_data.append([symbol, [pointers_copy, announcements]])
+        symbols_data.append([symbol, [pointers_copy, announcements], name])
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 
@@ -100,7 +104,9 @@ def filtercompanies(request):
             template = loader.get_template('TradingSupportApp/filtercompanies.html')
             company = Company.objects.filter(symbol=form.cleaned_data['symbol'])
             print(Company.objects.count())
+            name = Company.objects.get(symbol=form.cleaned_data['symbol']).values("name")
             unwantedCompany = UnwantedCompanies(UnwantedCompanies.objects.count(), form.cleaned_data['symbol'], False,
+                                                name["name"],
                                                 user=request.user.username)
             unwantedCompany.save()
             if Company.objects.filter(symbol=form.cleaned_data['symbol']).count() == 0:

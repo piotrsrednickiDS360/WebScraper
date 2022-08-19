@@ -49,7 +49,7 @@
     }
 
     .announcements-date {
-        width: 120px;
+        width: 170px;
         text-align: right;
     }
 
@@ -84,17 +84,23 @@
                 </tr>
             </thead>
             <tbody>
-                {% for symbol,onedata in symbols_data  %}
+                {% for symbol,onedata,name in symbols_data  %}
                     <tr>
                         <td>
                             {% with  link="https://www.bankier.pl/inwestowanie/profile/quote.html?symbol=" %}
                                 <a class="symbol" href={{ link|add:symbol }}> {{ symbol }} </a>
+                                <p>{{ name }}</p>
                             {% endwith %}
                         </td>
                         <td class="announcements-td">
                             {% for announcement in onedata.1 %}
-                                <p class="announcements-date">{{ announcement.date}} :</p>
-                                <p class="announcements-text">{{announcement.text}}</p>
+                                {% with  link=announcement.link %}
+                                    <a class="symbol" href="https:/{{ link }}">
+                                        <p class="announcements-date">{{ announcement.date}} :</p>
+                                        <p class="announcements-text">{{announcement.text}}</p>
+                                    </a>
+                                {% endwith %}
+
 {#                                <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>#}
                                 <br>
                             {% endfor %}

@@ -1,10 +1,14 @@
 import lxml as lxml
 from bs4 import BeautifulSoup
 import requests
+
+
 class AnnouncementDTO:
-    def __init__(self, date, text):
+    def __init__(self, date, text, link):
         self.date = date
         self.text = text
+        self.link = link
+
 
 def scrap_data_indexes(symbol):
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
@@ -76,23 +80,22 @@ def scrap_data_announcements(symbol):
     linkTags = soup.find_all("span", class_="entry-title")
     announcements = []
     links = []
-    for (text, date,link) in zip(textTags, dateTags, linkTags):
+    for (text, date, link) in zip(textTags, dateTags, linkTags):
         announcementText = text.text
 
         if "nabycie" in announcementText.lower():
+            index_left = str(link).find("<a href=\"") + 9
+            index_right = str(link).find("\" rel")
             announcementText = "Nabycie akcji własnych"
-            a = AnnouncementDTO(date['datetime'], announcementText)
+            a = AnnouncementDTO(date['datetime'], announcementText, "bankier.pl" + str(link)[index_left:index_right])
             # a = AnnouncementDTO(date.text, announcementText) # date without formating
-            index_left=str(link).find("<a href=\"")+9
-            index_right=str(link).find("\" rel")
-            print(index_left,index_right)
-            links.append("bankier.pl"+str(link)[index_left:index_right])
             announcements.append(a)
-            print(link)
-    print(links)
-    return announcements,links
+    return announcements
+
 
 scrap_data_announcements("ASBIS")
+
+
 def scrap_symbols():
     html_text = requests.get("https://www.bankier.pl/gielda/notowania/akcje").text
     soup = BeautifulSoup(html_text, 'lxml')
