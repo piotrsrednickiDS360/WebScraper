@@ -63,7 +63,7 @@ def mainpage(request):
         # change type of data in announcements
         for (text, date, link) in zip(announcements_list, date_list, link_list):
             announcementText = text
-            a = AnnouncementDTO(date['date'], announcementText['text'],link["link"])
+            a = AnnouncementDTO(date['date'], announcementText['text'], link["link"])
             # a = AnnouncementDTO(date.text, announcementText) # date without formating
 
             # Filter announcements older than 30 days
@@ -162,3 +162,8 @@ def login(request):
             password = form.cleaned_data.get('email')
     form = LoginForm()
     return render(request, 'TradingSupportApp/mainpage.html', {'form': form})
+
+
+def scrap_view(request):
+    scrap()
+    return render(request, 'TradingSupportApp/mainpage.html')
