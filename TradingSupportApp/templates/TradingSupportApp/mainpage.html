@@ -97,7 +97,7 @@
                         <td class="announcements-td">
                             {% for announcement in onedata.1 %}
                                 {% with  link=announcement.link %}
-                                    <a class="symbol" href="https:/{{ link }}">
+                                    <a class="symbol" href="https://{{ link }}">
                                         <p class="announcements-date">{{ announcement.date}} :</p>
                                         <p class="announcements-text">{{announcement.text}}</p>
                                     </a>
