@@ -1,1 +1,1 @@
-web: gunicorn TradingSupportApp.wsgi
+web: gunicorn TradingSupport.wsgi
