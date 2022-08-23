@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gj__q6w55excgjm7l3uk+-)bxgbougb_d*u8szzxfw420vr0hc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -144,4 +144,4 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 DCS_SESSION_COOKIE_SAMESITE = "None"
 
-CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com','https://*.127.0.0.1','https://trading-support-app.herokuapp.com','https://trading-support-application.herokuapp.com/']
+CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com','https://*.127.0.0.1','https://trading-support-app.herokuapp.com','https://trading-support-application.herokuapp.com']
