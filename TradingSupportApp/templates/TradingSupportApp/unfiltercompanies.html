@@ -150,11 +150,11 @@ a:active {
                 <a>Logged as {{ user.username }}</a>
             {% endblock %}
         </div>
-        <div class="Scrap btn">
-        {% block Scrap %}
-            <a  href="{% url 'scrap' %}">Scrap</a>
-        {% endblock %}
-        </div>
+{#        <div class="Scrap btn">#}
+{#        {% block Scrap %}#}
+{#            <a  href="{% url 'scrap' %}">Scrap</a>#}
+{#        {% endblock %}#}
+{#        </div>#}
     {% else %}
         <p>You are not logged in</p>
         <div class="LogInButton">

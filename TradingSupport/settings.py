@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-gj__q6w55excgjm7l3uk+-)bxgbougb_d*u8szzxfw420vr0hc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['damp-woodland-14190.herokuapp.com', '127.0.0.1','trading-support-app.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -52,6 +52,15 @@ MIDDLEWARE = [
 Q_CLUSTER = {
     "name": "TradingSupportApp",
     "orm": "default",  # Use Django's ORM + database for broker
+    'timeout': 60000,
+    "retry" : 5,
+    'ack_failures': True,
+    'workers': 8,
+    'recycle': 500,
+    'db': {
+        'host': '127.0.0.1',
+        'port': 6379,
+        'db': 0, }
 }
 
 ROOT_URLCONF = 'TradingSupport.urls'

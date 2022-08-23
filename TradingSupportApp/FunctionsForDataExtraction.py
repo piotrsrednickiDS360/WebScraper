@@ -2,6 +2,8 @@ import lxml as lxml
 from bs4 import BeautifulSoup
 import requests
 
+import time
+
 
 class AnnouncementDTO:
     def __init__(self, date, text, link):
@@ -12,7 +14,22 @@ class AnnouncementDTO:
 
 def scrap_data_indexes(symbol):
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
-    html_text = requests.get("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
+
+    html_text = ''
+    while html_text == '':
+        try:
+            html_text = requests.get("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
+            break
+        except:
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
+
+
+
     soup = BeautifulSoup(html_text, 'lxml')
     indexes = soup.find('div', {"id": "boxIndexAffiliation"})
     indexes = str(indexes).replace("</a></td>\n", "</a></td>\n")
@@ -36,6 +53,20 @@ def scrap_data_indexes(symbol):
 def scrap_data_pointers(symbol):
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
     html_text = requests.get("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
+
+    html_text = ''
+    while html_text == '':
+        try:
+            html_text = requests.get(
+                "https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
+            break
+        except:
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
     soup = BeautifulSoup(html_text, 'lxml')
     pointers = soup.find('div', {"id": "boxStockRations"})
     pointers = str(pointers).replace("</td>", "</td>\n")
@@ -55,8 +86,20 @@ def scrap_data_pointers(symbol):
 
 from bs4.dammit import EncodingDetector
 def scrap_data_names(symbol):
-    html_text_announcements = requests.get(
-        "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
+    html_text_announcements = ''
+    while html_text_announcements == '':
+        try:
+            html_text_announcements = requests.get(
+                "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
+            break
+        except:
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
+
     http_encoding = html_text_announcements.encoding if 'charset' in html_text_announcements.headers.get('content-type', '').lower() else None
     html_encoding = EncodingDetector.find_declared_encoding(html_text_announcements.content, is_html=True)
     encoding = html_encoding or http_encoding
@@ -73,8 +116,21 @@ scrap_data_names("ASBIS")
 
 def scrap_data_announcements(symbol):
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
-    html_text_announcements = requests.get(
-        "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol)).text
+
+    html_text_announcements = ''
+    while html_text_announcements == '':
+        try:
+            html_text_announcements = requests.get(
+                "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol)).text
+            break
+        except:
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
+
     soup = BeautifulSoup(html_text_announcements, 'lxml')
 
     # komunikaty
@@ -96,11 +152,22 @@ def scrap_data_announcements(symbol):
     return announcements
 
 
-scrap_data_announcements("ASBIS")
 
 
 def scrap_symbols():
-    html_text = requests.get("https://www.bankier.pl/gielda/notowania/akcje").text
+    html_text = ''
+    while html_text == '':
+        try:
+            html_text = requests.get("https://www.bankier.pl/gielda/notowania/akcje").text
+            break
+        except:
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
+
     soup = BeautifulSoup(html_text, 'lxml')
     symbols = soup.find_all('td', class_="colWalor textNowrap")
     symbols_bufor = []

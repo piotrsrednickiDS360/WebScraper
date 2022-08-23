@@ -36,7 +36,7 @@ def mainpage(request):
     symbols = []
     symbols_data = []
     names = []
-    companies = Company.objects.all()
+    companies = Company.objects.all().order_by('symbol');
     # getting companies
     for company in companies:
         symbols.append(company.symbol)
