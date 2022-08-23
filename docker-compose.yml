@@ -11,17 +11,19 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "6379:6379"
+
   web:
     build: .
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py initadmin && python manage.py runserver"
+    command:
+      bash -c "rm -rIf db.sqlite3 &&
+      python manage.py makemigrations &&
+      python manage.py migrate --run-syncdb &&
+      python manage.py initadmin &&
+      python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
-      - "8001:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - "8000:8000"
     depends_on:
       - db
   djangoq:
@@ -30,6 +32,6 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8002:8001"
+      - "8001"
     depends_on:
       - db
