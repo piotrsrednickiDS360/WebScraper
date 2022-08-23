@@ -1,1 +1,1 @@
-web: gunicorn TradingSupport.wsgi
+web: gunicorn TradingSupport.wsgi -b 0.0.0.0:$PORT
