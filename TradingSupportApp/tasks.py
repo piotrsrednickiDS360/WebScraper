@@ -1,15 +1,14 @@
-from celery import shared_task
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
     scrap_data_pointers, \
     scrap_symbols, scrap_data_names
-from bs4 import BeautifulSoup
 
 from TradingSupportApp.models import *
 
 
 def scrap():
+    print("Scrapping has started but why")
     symbols = scrap_symbols()
     data = []
     symbols_data = []

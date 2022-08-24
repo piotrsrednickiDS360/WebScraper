@@ -1,8 +1,6 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
-from datetime import datetime, timedelta
-from .FunctionsForDataExtraction import scrap_symbols
+from datetime import datetime
 from .forms import LoginForm, FilterForm, UnFilterForm
 from .models import Company, UnwantedCompanies, Pointers, Announcements
 # Create your views here.

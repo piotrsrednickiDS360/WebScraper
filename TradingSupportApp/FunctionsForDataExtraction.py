@@ -13,6 +13,7 @@ class AnnouncementDTO:
 
 
 def scrap_data_indexes(symbol):
+    print("Scrapping indexes has started but why")
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
 
     html_text = ''
@@ -51,6 +52,7 @@ def scrap_data_indexes(symbol):
 
 
 def scrap_data_pointers(symbol):
+    print("Scrapping pointers has started but why")
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
     html_text = requests.get("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
 
@@ -86,6 +88,7 @@ def scrap_data_pointers(symbol):
 
 from bs4.dammit import EncodingDetector
 def scrap_data_names(symbol):
+    print("Scrapping names has started but why")
     html_text_announcements = ''
     while html_text_announcements == '':
         try:
@@ -111,10 +114,9 @@ def scrap_data_names(symbol):
     return name
 
 
-scrap_data_names("ASBIS")
-
 
 def scrap_data_announcements(symbol):
+    print("Scrapping announcements has started but why")
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
 
     html_text_announcements = ''
@@ -155,6 +157,7 @@ def scrap_data_announcements(symbol):
 
 
 def scrap_symbols():
+    print("Scrapping symbols has started but why")
     html_text = ''
     while html_text == '':
         try:
