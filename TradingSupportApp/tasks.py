@@ -73,7 +73,6 @@ def save_function(symbols_data):
     return print('finished')
 
 
-
 def delete_older_function():
     print("Start deleting: \n")
     # today = datetime.datetime.now()

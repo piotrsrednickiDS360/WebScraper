@@ -164,6 +164,3 @@ def login(request):
     return render(request, 'TradingSupportApp/mainpage.html', {'form': form})
 
 
-def scrap_view(request):
-    scrap()
-    return render(request, 'TradingSupportApp/mainpage.html')
