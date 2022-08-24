@@ -1,4 +1,4 @@
 build:
   docker:
-    web: Dockerfile
-    worker: Dockerfile2
+    web: gunicorn TradingSupport.wsgi
+    worker: python manage.py qcluster
