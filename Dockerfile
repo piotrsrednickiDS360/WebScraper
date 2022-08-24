@@ -13,4 +13,3 @@ RUN pip install -r requirements.txt
 COPY . /code/
 
 CMD gunicorn TradingSupport.wsgi:application
-CMD python manage.py qcluster
