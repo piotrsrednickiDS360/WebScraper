@@ -28,6 +28,6 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8001"
+      - "8000:8001"
     depends_on:
       - db
