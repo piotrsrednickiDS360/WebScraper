@@ -4,5 +4,5 @@ build:
 run:
   worker:
     command:
-    - python manage.py qcluster
+      - python manage.py qcluster
     image: worker
