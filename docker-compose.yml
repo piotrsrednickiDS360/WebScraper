@@ -22,7 +22,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
-  djangoq:
+  worker:
     build: .
     command: python manage.py qcluster
     volumes:
