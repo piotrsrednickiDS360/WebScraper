@@ -2,14 +2,14 @@ from datetime import datetime
 
 from TradingSupportApp.FunctionsForDataExtraction import scrap_data_indexes, scrap_data_announcements, \
     scrap_data_pointers, \
-    scrap_symbols, scrap_data_names
+    scrap_symbols, scrap_data_names, scrap_data_assembly_announcements
 
 from TradingSupportApp.models import *
 
 
 def scrap():
-    print("Scrapping has started but why")
-    symbols = scrap_symbols()
+    symbols = ["ARCUS", "RADPOL"]
+    # symbols = scrap_symbols()
     data = []
     symbols_data = []
     for symbol in symbols:
@@ -17,20 +17,17 @@ def scrap():
         announcements = scrap_data_announcements(symbol)
         pointers = scrap_data_pointers(symbol)
         name = scrap_data_names(symbol)
-        symbols_data.append([symbol, [pointers, announcements], name])
-    # print("pointers:", type(pointers))
+        assemblyAnnouncements=scrap_data_assembly_announcements(symbol)
+        symbols_data.append([symbol, [pointers, announcements], name, assemblyAnnouncements])
     delete_older_function()
     save_function(symbols_data)
-    # print(symbols_data)
     return symbols_data
 
 
 def save_function(symbols_data):
     print('starting')
     symbols_data_list = list(symbols_data)
-
     for el in symbols_data_list:
-
         try:
             _company = Company.objects.update_or_create(
                 symbol=el[0],
@@ -42,11 +39,8 @@ def save_function(symbols_data):
             print(e)
             break
     for el in symbols_data_list:
-        # print(el)
-
         try:
             for p_key in el[1][0]:
-                # print(p_key, el[1][0][p_key], '\n')
                 Pointers.objects.update_or_create(
                     name=p_key,
                     value=el[1][0][p_key],
@@ -63,27 +57,20 @@ def save_function(symbols_data):
                     link=a.link,
                 )
                 i += 1
-
         except Exception as e:
             print('failed')
             print(e)
             break
-
     return print('finished')
 
 
 def delete_older_function():
     print("Start deleting: \n")
-    # today = datetime.datetime.now()
-    # print("today: ", today, '\n')
-
     try:
         print("Start deleting: \n")
         how_many_days = datetime.datetime.now() - datetime.timedelta(days=14)
         Announcements.objects.filter(date__lte=how_many_days).delete()
-
     except Exception as e:
         print('failed deleting')
         print(e)
-
     return print('deleting finished')

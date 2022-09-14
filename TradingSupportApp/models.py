@@ -26,3 +26,10 @@ class Announcements(models.Model):
     text = models.CharField(max_length=10)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     link = models.CharField(max_length=200)
+
+
+class Assemblies(models.Model):
+    date = models.DateField()
+    text = models.CharField(max_length=10)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    link = models.CharField(max_length=200)

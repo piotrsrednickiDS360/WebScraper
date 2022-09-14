@@ -3,13 +3,19 @@ from django.template import loader
 from datetime import datetime
 from .forms import LoginForm, FilterForm, UnFilterForm
 from .models import Company, UnwantedCompanies, Pointers, Announcements
-# Create your views here.
 from .tasks import scrap
 
 from django.views.decorators.csrf import csrf_exempt
 
 
 class AnnouncementDTO:
+    def __init__(self, date, text, link):
+        self.date = date
+        self.text = text
+        self.link = link
+
+
+class CompanyData:
     def __init__(self, date, text, link):
         self.date = date
         self.text = text
@@ -29,67 +35,89 @@ def homepage(request):
 
 
 @csrf_exempt
-def mainpage(request):
-    template = loader.get_template('TradingSupportApp/mainpage.html')
-    symbols = []
-    symbols_data = []
-    names = []
-    companies = Company.objects.all().order_by('symbol');
-    # getting companies
+def GetCompaniesData():
+    companies = Company.objects.all().order_by('symbol')
+    symbols = [], names = []
     for company in companies:
         symbols.append(company.symbol)
     for company in companies:
         names.append(company.name)
-    pointers_set = set({})
+    return companies, symbols, names
+
+
+@csrf_exempt
+def IgnoreUnwantedCompanies(username):
+    unwantedCompanies = UnwantedCompanies.objects.filter(user=username).values("symbol")
     unwanted = []
-    # ignoring unwanted companies
-    unwantedCompanies = UnwantedCompanies.objects.filter(user=request.user).values("symbol")
     for unwanteCompany in unwantedCompanies:
         unwanted.append(unwanteCompany["symbol"])
+    return unwanted, unwantedCompanies
+
+
+@csrf_exempt
+def FilterPointersAndCreateTheirSet(pointers_set, symbol):
+    pointers = {}
+    pointers_list = list(
+        Pointers.objects.filter(company=Company.objects.get(symbol=symbol)).values("name", "value"))
+    for pointer in pointers_list:
+        pointers[pointer["name"]] = pointer["value"]
+    # create a set of data being the header of a table
+    pointers_copy = pointers.copy()  # bez dywidendy
+    for key in pointers:
+        if "Dywidenda" in key and "Dywidenda (%)" not in key:
+            pointers_set.add("Dywidenda")
+            pointers_copy["Dywidenda"] = pointers_copy.pop(key)
+        else:
+            pointers_set.add(key)
+    return pointers_copy, pointers_set
+
+
+@csrf_exempt
+def FilterAnnouncements(symbol):
+    announcements = []
+    announcements_list = list(
+        Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
+    date_list = list(
+        Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("date"))
+    link_list = list(
+        Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("link"))
+    # change type of data in announcements
+    for (text, date, link) in zip(announcements_list, date_list, link_list):
+        a = AnnouncementDTO(date['date'], text['text'], link["link"])
+        # Filter announcements older than 30 days
+        time_between_insertion = datetime.now().date() - a.date
+        if time_between_insertion.days > 30:
+            continue
+        announcements.append(a)
+    return announcements
+
+
+@csrf_exempt
+def GetPointersAndAnnouncements(username):
+    # getting companies
+    companies, symbols, names = GetCompaniesData()
+    # ignoring unwanted companies
+    unwanted, unwantedCompanies = IgnoreUnwantedCompanies(username)
+    symbols_data = []
+    pointers_set = set({})
     for symbol, name in zip(symbols, names):
-        # filtering
+        # filtering unwanted companies
         if symbol in unwanted:
             continue
-        # getting pointers and announcements from database and changing their representation,
-        announcements = []
-        announcements_list = list(
-            Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
-        date_list = list(
-            Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("date"))
-        link_list = list(
-            Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("link"))
-        # change type of data in announcements
-        for (text, date, link) in zip(announcements_list, date_list, link_list):
-            announcementText = text
-            a = AnnouncementDTO(date['date'], announcementText['text'], link["link"])
-            # a = AnnouncementDTO(date.text, announcementText) # date without formating
-
-            # Filter announcements older than 30 days
-            time_between_insertion = datetime.now().date() - a.date
-            if time_between_insertion.days > 30:
-                continue
-
-            announcements.append(a)
-
+        # getting pointers and announcements from database and changing their representation
+        announcements = FilterAnnouncements(symbol)
         if len(announcements) == 0:
             continue
-
-        pointers = {}
-        pointers_list = list(
-            Pointers.objects.filter(company=Company.objects.get(symbol=symbol)).values("name", "value"))
-        for pointer in pointers_list:
-            pointers[pointer["name"]] = pointer["value"]
-
-        # create a set of data being the header of a table
-        pointers_copy = pointers.copy()  # bez dywidendy
-        for key in pointers:
-            if "Dywidenda" in key and "Dywidenda (%)" not in key:
-                pointers_set.add("Dywidenda")
-                pointers_copy["Dywidenda"] = pointers_copy.pop(key)
-            else:
-                pointers_set.add(key)
+        pointers_copy, pointers_set = FilterPointersAndCreateTheirSet(pointers_set, symbol)
         # add data to list
         symbols_data.append([symbol, [pointers_copy, announcements], name])
+    return symbols, symbols_data, pointers_set
+
+
+@csrf_exempt
+def mainpage(request):
+    # getting pointers and announcements
+    symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 
@@ -120,6 +148,7 @@ def filtercompanies(request):
 
 @csrf_exempt
 def unfiltercompanies(request):
+    # a line that fixes unwanted companies
     # Company.objects.all().update(wanted=True)
     if request.method == 'POST':
         form = UnFilterForm(request.POST, request.user)
@@ -160,5 +189,3 @@ def login(request):
             password = form.cleaned_data.get('email')
     form = LoginForm()
     return render(request, 'TradingSupportApp/mainpage.html', {'form': form})
-
-

@@ -1,7 +1,6 @@
-import lxml as lxml
 from bs4 import BeautifulSoup
+from bs4.dammit import EncodingDetector
 import requests
-
 import time
 
 
@@ -13,13 +12,13 @@ class AnnouncementDTO:
 
 
 def scrap_data_indexes(symbol):
-    print("Scrapping indexes has started but why")
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
 
     html_text = ''
     while html_text == '':
         try:
-            html_text = requests.get("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
+            html_text = requests.get(
+                "https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
             break
         except:
             print("Connection refused by the server..")
@@ -28,8 +27,6 @@ def scrap_data_indexes(symbol):
             time.sleep(5)
             print("Was a nice sleep, now let me continue...")
             continue
-
-
 
     soup = BeautifulSoup(html_text, 'lxml')
     indexes = soup.find('div', {"id": "boxIndexAffiliation"})
@@ -52,10 +49,7 @@ def scrap_data_indexes(symbol):
 
 
 def scrap_data_pointers(symbol):
-    print("Scrapping pointers has started but why")
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
-    html_text = requests.get("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
-
     html_text = ''
     while html_text == '':
         try:
@@ -86,9 +80,8 @@ def scrap_data_pointers(symbol):
 
     return pointersDic
 
-from bs4.dammit import EncodingDetector
+
 def scrap_data_names(symbol):
-    print("Scrapping names has started but why")
     html_text_announcements = ''
     while html_text_announcements == '':
         try:
@@ -103,10 +96,12 @@ def scrap_data_names(symbol):
             print("Was a nice sleep, now let me continue...")
             continue
 
-    http_encoding = html_text_announcements.encoding if 'charset' in html_text_announcements.headers.get('content-type', '').lower() else None
+    http_encoding = html_text_announcements.encoding if 'charset' in \
+                                                        html_text_announcements.headers.get('content-type',
+                                                                                            '').lower() else None
     html_encoding = EncodingDetector.find_declared_encoding(html_text_announcements.content, is_html=True)
     encoding = html_encoding or http_encoding
-    soup = BeautifulSoup(html_text_announcements.content, 'lxml',from_encoding=encoding)
+    soup = BeautifulSoup(html_text_announcements.content, 'lxml', from_encoding=encoding)
     name = soup.find_all('a', class_="profilHead")
     name = name[0].text
     name = "\n".join([line for line in name.split('\n') if line.strip() != ''])
@@ -114,9 +109,7 @@ def scrap_data_names(symbol):
     return name
 
 
-
 def scrap_data_announcements(symbol):
-    print("Scrapping announcements has started but why")
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
 
     html_text_announcements = ''
@@ -140,7 +133,6 @@ def scrap_data_announcements(symbol):
     dateTags = soup.find_all("time", class_="entry-date")
     linkTags = soup.find_all("span", class_="entry-title")
     announcements = []
-    links = []
     for (text, date, link) in zip(textTags, dateTags, linkTags):
         announcementText = text.text
 
@@ -154,10 +146,7 @@ def scrap_data_announcements(symbol):
     return announcements
 
 
-
-
 def scrap_symbols():
-    print("Scrapping symbols has started but why")
     html_text = ''
     while html_text == '':
         try:
@@ -180,3 +169,40 @@ def scrap_symbols():
         symbol = "\n".join([line for line in symbol.split('\n') if line.strip() != ''])
         symbols_bufor.append(symbol)
     return symbols_bufor
+
+
+def scrap_data_assembly_announcements(symbol):
+
+    # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
+
+    html_text_announcements = ''
+    while html_text_announcements == '':
+        try:
+            html_text_announcements = requests.get(
+                "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol)).text
+            break
+        except:
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
+
+    soup = BeautifulSoup(html_text_announcements, 'lxml')
+    # komunikaty
+    textTags = soup.find_all("span", class_="entry-title")
+    dateTags = soup.find_all("time", class_="entry-date")
+    linkTags = soup.find_all("span", class_="entry-title")
+    assemblyAnnouncements = []
+    for (text, date, link) in zip(textTags, dateTags, linkTags):
+        assemblyAnnouncementText = text.text
+        if "o zwoåani" in assemblyAnnouncementText.lower():
+            index_left = str(link).find("<a href=\"") + 9
+            index_right = str(link).find("\" rel")
+            assemblyAnnouncementText = "Zwołanie nadzwyczajnego walnego zgromadzenia"
+            a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,
+                                "bankier.pl" + str(link)[index_left:index_right])
+            # a = AnnouncementDTO(date.text, announcementText) # date without formating
+            assemblyAnnouncements.append(a)
+    return assemblyAnnouncements
