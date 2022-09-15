@@ -28,7 +28,7 @@ class Announcements(models.Model):
     link = models.CharField(max_length=200)
 
 
-class Assemblies(models.Model):
+class AssemblyAnnouncements(models.Model):
     date = models.DateField()
     text = models.CharField(max_length=10)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)

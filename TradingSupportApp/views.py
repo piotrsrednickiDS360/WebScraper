@@ -2,20 +2,13 @@ from django.shortcuts import render
 from django.template import loader
 from datetime import datetime
 from .forms import LoginForm, FilterForm, UnFilterForm
-from .models import Company, UnwantedCompanies, Pointers, Announcements
+from .models import Company, UnwantedCompanies, Pointers, Announcements, AssemblyAnnouncements
 from .tasks import scrap
 
 from django.views.decorators.csrf import csrf_exempt
 
 
 class AnnouncementDTO:
-    def __init__(self, date, text, link):
-        self.date = date
-        self.text = text
-        self.link = link
-
-
-class CompanyData:
     def __init__(self, date, text, link):
         self.date = date
         self.text = text
@@ -37,7 +30,8 @@ def homepage(request):
 @csrf_exempt
 def GetCompaniesData():
     companies = Company.objects.all().order_by('symbol')
-    symbols = [], names = []
+    symbols = []
+    names = []
     for company in companies:
         symbols.append(company.symbol)
     for company in companies:
@@ -91,7 +85,20 @@ def FilterAnnouncements(symbol):
         announcements.append(a)
     return announcements
 
-
+@csrf_exempt
+def FilterAssemblyAnnouncements(symbol):
+    assemblyAannouncements = []
+    assemblyAnnouncementsList = list(
+        AssemblyAnnouncements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
+    dateList = list(
+        AssemblyAnnouncements.objects.filter(company=Company.objects.get(symbol=symbol)).values("date"))
+    linkList = list(
+        AssemblyAnnouncements.objects.filter(company=Company.objects.get(symbol=symbol)).values("link"))
+    # change type of data in announcements
+    for (text, date, link) in zip(assemblyAnnouncementsList, dateList, linkList):
+        a = AnnouncementDTO(date['date'], text['text'], link["link"])
+        assemblyAannouncements.append(a)
+    return assemblyAannouncements
 @csrf_exempt
 def GetPointersAndAnnouncements(username):
     # getting companies
@@ -106,17 +113,19 @@ def GetPointersAndAnnouncements(username):
             continue
         # getting pointers and announcements from database and changing their representation
         announcements = FilterAnnouncements(symbol)
+        assemblyAnnouncements = FilterAssemblyAnnouncements(symbol)
         if len(announcements) == 0:
             continue
-        pointers_copy, pointers_set = FilterPointersAndCreateTheirSet(pointers_set, symbol)
+        pointers, pointers_set = FilterPointersAndCreateTheirSet(pointers_set, symbol)
         # add data to list
-        symbols_data.append([symbol, [pointers_copy, announcements], name])
+        symbols_data.append([symbol, name, pointers, announcements, assemblyAnnouncements])
     return symbols, symbols_data, pointers_set
 
 
 @csrf_exempt
 def mainpage(request):
     # getting pointers and announcements
+    scrap()
     symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
