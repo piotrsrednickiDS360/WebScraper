@@ -1,6 +1,8 @@
+# Build an app using file Dockerfile
 build:
   docker:
     web: Dockerfile
+# Then run the qcluster as a worker
 run:
   worker:
     command:

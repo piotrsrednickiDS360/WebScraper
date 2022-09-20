@@ -5,50 +5,27 @@ import time
 
 
 class AnnouncementDTO:
+    """
+        Class binds data about an Announcement together
+        Arguments:
+            date: Datetime.Datetime
+            text: str
+            link: str
+    """
     def __init__(self, date, text, link):
         self.date = date
         self.text = text
         self.link = link
 
 
-def scrap_data_indexes(symbol):
-    # połączenie ze stroną bankier i pobranie strony z danym symbolem
-
-    html_text = ''
-    while html_text == '':
-        try:
-            html_text = requests.get(
-                "https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
-            break
-        except:
-            print("Connection refused by the server..")
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
-            time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
-            continue
-
-    soup = BeautifulSoup(html_text, 'lxml')
-    indexes = soup.find('div', {"id": "boxIndexAffiliation"})
-    indexes = str(indexes).replace("</a></td>\n", "</a></td>\n")
-    indexes = BeautifulSoup(indexes, 'lxml').text.replace(
-        """PrzynaleÅ¼noÅÄ do indeksÃ³w\n\n\n\n\nIndeks\nUdziaÅ""",
-        "").replace("\n\n", "\n").replace("\n\n", "\n").replace("SpÃ³Åka nie przynaleÅ¼y do Å¼adnego indeksu",
-                                                                "").replace("PrzynaleÅ¼noÅÄ do indeksÃ³w", "")
-    indexes = "\n".join([line for line in indexes.split('\n') if line.strip() != ''])
-    indexes = indexes.split(sep="\n")
-
-    dicHelp = zip(indexes[::2], indexes[1::2])
-    pointersDic = {}
-
-    for el in dicHelp:
-        cell = {el[0]: el[1]}
-        pointersDic.update(cell)
-
-    return pointersDic
-
-
 def scrap_data_pointers(symbol):
+    """
+        Function scrapes data about pointers from bankier.pl
+        Arguments:
+            symbol: str
+        Returns:
+            Function returns a Dictionary of objects of class Pointers
+    """
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
     html_text = ''
     while html_text == '':
@@ -82,6 +59,13 @@ def scrap_data_pointers(symbol):
 
 
 def scrap_data_names(symbol):
+    """
+        Function scrapes a name of a given symbol from bankier.pl
+        Arguments:
+            symbol: str
+        Returns:
+            Function returns a string cotaining a name of a symbol
+    """
     html_text_announcements = ''
     while html_text_announcements == '':
         try:
@@ -110,6 +94,13 @@ def scrap_data_names(symbol):
 
 
 def scrap_data_announcements(symbol):
+    """
+        Function scrapes information about announcements from bankier.pl
+        Arguments:
+            symbol: str
+        Returns:
+            Function returns an array AnnouncementDTO objects
+    """
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
 
     html_text_announcements = ''
@@ -152,6 +143,12 @@ def scrap_data_announcements(symbol):
 
 
 def scrap_symbols():
+    """
+        Function scrapes symbols from bankier.pl
+        Arguments:
+        Returns:
+            Function returns an array of symbols (an array of strings)
+    """
     html_text = ''
     while html_text == '':
         try:
@@ -182,7 +179,13 @@ def scrap_symbols():
 
 
 def GetAssemblyAnnouncementData(link):
-    print(link)
+    """
+        Function scrapes data about an assembly announcement from the link
+        Arguments:
+            link: str
+        Returns:
+            Function returns lines of text as a string
+    """
     html_text_announcements = ''
     while html_text_announcements == '':
         try:
@@ -196,13 +199,7 @@ def GetAssemblyAnnouncementData(link):
             time.sleep(5)
             print("Was a nice sleep, now let me continue...")
             continue
-    """
-    soup = BeautifulSoup(html_text, 'lxml')
-    pointers = soup.find('div', {"id": "boxStockRations"})
-    pointers = str(pointers).replace("</td>", "</td>\n")
-    pointers = BeautifulSoup(pointers, 'lxml').text.replace("""""", "").replace(
-        "\n\n", "\n").replace("zÅ", "PLN")
-    """
+
     soup = BeautifulSoup(html_text_announcements, 'lxml')
     text = soup.find("table", class_="rid2")
     text = str(text)
@@ -219,17 +216,22 @@ def GetAssemblyAnnouncementData(link):
             pass
         else:
             break
-    print(lines)
-    lines_copy=lines.copy()
-    lines=[]
-    for line in lines:
+    lines_copy = lines.copy()
+    lines = ""
+    for line in lines_copy:
         if "zniesieni" in line or "wycofani" in line:
-            lines.append(line)
-    print(lines)
-    return text
+            lines += line + "\n"
+    return str(lines)
 
 
 def scrap_data_assembly_announcements(symbol):
+    """
+        Function scrapes data about assembly announcements from bankier.pl
+        Arguments:
+            symbol: str
+        Returns:
+            Function returns an array of AnnouncementDTO objects
+    """
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
 
     html_text_announcements = ''
@@ -258,13 +260,13 @@ def scrap_data_assembly_announcements(symbol):
     assemblyAnnouncements = []
     for (text, date, link) in zip(textTags, dateTags, linkTags):
         assemblyAnnouncementText = text.text
-        if "o zwoåani" in assemblyAnnouncementText.lower() or "danie zwoåania" in assemblyAnnouncementText.lower() or "zwoåanie" in assemblyAnnouncementText.lower():
+        if "o zwoåani" in assemblyAnnouncementText.lower() or "danie zwoåania nad" in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower():
             index_left = str(link).find("<a href=\"") + 9
             index_right = str(link).find("\" rel")
             link = "bankier.pl" + str(link)[index_left:index_right]
             assemblyAnnouncementText = GetAssemblyAnnouncementData(link)
             if assemblyAnnouncementText == "":
-                continue
+                assemblyAnnouncementText = "Certain information not found"
             a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,
                                 link)
             assemblyAnnouncements.append(a)

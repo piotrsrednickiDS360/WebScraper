@@ -6,8 +6,13 @@ from TradingSupportApp.models import *
 
 
 def scrap():
-    symbols = ["ARCUS", "RADPOL", "POLNORD"]
-    # symbols = scrap_symbols()
+    """
+        Function scrapes all required data for the app from bankier.pl
+        Arguments:
+        Returns:
+            Function returns an array representing data associated with a symbol
+    """
+    symbols = scrap_symbols()
     symbols_data = []
     for symbol in symbols:
         # wskaźniki giełdowe
@@ -22,7 +27,14 @@ def scrap():
 
 
 def save_function(symbols_data):
-    print('starting')
+    """
+        Function turns data into elements of a database
+        Arguments:
+            symbols_data: array
+        Returns:
+            Function returns None
+    """
+    print('Start saving')
     symbols_data_list = list(symbols_data)
     for el in symbols_data_list:
         try:
@@ -32,7 +44,7 @@ def save_function(symbols_data):
                 name=el[1],
             )
         except Exception as e:
-            print('companies faile')
+            print('companies failed', e)
             print(e)
             break
     for el in symbols_data_list:
@@ -40,9 +52,13 @@ def save_function(symbols_data):
             for p_key in el[2]:
                 Pointers.objects.update_or_create(
                     name=p_key,
-                    value=p_key[p_key],
+                    value=el[2][p_key],
                     company=Company.objects.get(symbol=el[0])
                 )
+        except Exception as e:
+            print('Pointers failed', e)
+            break
+        try:
             for a in el[3]:
                 a.date = datetime.datetime.fromisoformat(a.date)
                 a.date = datetime.datetime.strftime(a.date, "%Y-%m-%d")
@@ -52,6 +68,10 @@ def save_function(symbols_data):
                     company=Company.objects.get(symbol=el[0]),
                     link=a.link,
                 )
+        except Exception as e:
+            print('Announcements failed', e)
+            break
+        try:
             for a in el[4]:
                 a.date = datetime.datetime.fromisoformat(a.date)
                 a.date = datetime.datetime.strftime(a.date, "%Y-%m-%d")
@@ -62,17 +82,23 @@ def save_function(symbols_data):
                     link=a.link,
                 )
         except Exception as e:
-            print('failed', e)
+            print('Assembly announcements failed', e)
             break
-    return print('finished')
+    return print('Saving finished')
 
 
 def delete_older_function():
-    print("Start deleting: \n")
+    """
+        Function deletes announcements that are too old
+        Arguments:
+        Returns:
+            Function returns None
+    """
+    print("Start deleting:")
     try:
-        print("Start deleting: \n")
-        how_many_days = datetime.datetime.now() - datetime.timedelta(days=14)
+        how_many_days = datetime.datetime.now() - datetime.timedelta(days=21)
         Announcements.objects.filter(date__lte=how_many_days).delete()
+        AssemblyAnnouncements.objects.filter(date__lte=how_many_days).delete()
     except Exception as e:
         print('failed deleting')
         print(e)

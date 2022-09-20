@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-gj__q6w55excgjm7l3uk+-)bxgbougb_d*u8szzxfw420vr0hc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# All hosts allowed
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -36,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'TradingSupportApp',
-    'django_q'
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Qcluster's configuration
 Q_CLUSTER = {
     "name": "TradingSupportApp",
     "orm": "default",  # Use Django's ORM + database for broker
@@ -138,10 +140,9 @@ LOGOUT_REDIRECT_URL = "mainpage"
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
+# Resolving issues with CSRF blocking site launch
 CSRF_COOKIE_DOMAIN = None
-
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 DCS_SESSION_COOKIE_SAMESITE = "None"
-
 CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com','https://*.127.0.0.1','https://trading-support-app.herokuapp.com','https://trading-support-application.herokuapp.com']

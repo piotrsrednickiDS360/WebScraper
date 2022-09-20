@@ -1,4 +1,3 @@
-
 ## Repository:
 
 ### 1. **GitHub** - branches structure:
@@ -25,10 +24,6 @@
 - 3.1. PR description as *bullet point list* required
 - 3.2. Assign *Piotr Średnicki* as **required reviewer**, rest developers as **optional reviewers**
 - 3.3. Merge from feature into dev accepted if PR receive approve vote and all comments/threads are resolved
-
----
-
-## Python:
 
 ### 4. **PyCharm** - docstring format:
 - 4.1 Function:
@@ -113,10 +108,6 @@ def function():
     return ...
 ```
 
----
-
 ### 7. **PyCharm** - useful tips:
 - 7.1 ```# !TODO(AN)``` - to do author notes in code
 - 7.2 Reformat .py file according to PEP-8: ctrl+A -> ctrl+shift+alt+L -> enter
-
----

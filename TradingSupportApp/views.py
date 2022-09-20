@@ -4,19 +4,19 @@ from datetime import datetime
 from .forms import LoginForm, FilterForm, UnFilterForm
 from .models import Company, UnwantedCompanies, Pointers, Announcements, AssemblyAnnouncements
 from .tasks import scrap
-
+from FunctionsForDataExtraction import AnnouncementDTO
 from django.views.decorators.csrf import csrf_exempt
-
-
-class AnnouncementDTO:
-    def __init__(self, date, text, link):
-        self.date = date
-        self.text = text
-        self.link = link
 
 
 @csrf_exempt
 def homepage(request):
+    """
+        Function creates a login form for the app
+        Arguments:
+            request: WSGIReguest
+        Returns:
+            Function returns an HttpResponse
+    """
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -29,6 +29,12 @@ def homepage(request):
 
 @csrf_exempt
 def GetCompaniesData():
+    """
+        Function gets and splits data about companies
+        Arguments:
+        Returns:
+            Function returns a list of strings, and a list of strings
+    """
     companies = Company.objects.all().order_by('symbol')
     symbols = []
     names = []
@@ -36,20 +42,35 @@ def GetCompaniesData():
         symbols.append(company.symbol)
     for company in companies:
         names.append(company.name)
-    return companies, symbols, names
+    return symbols, names
 
 
 @csrf_exempt
 def IgnoreUnwantedCompanies(username):
+    """
+        Function gets unwanted companies for a certain user
+        Arguments:
+            username: str
+        Returns:
+            Function returns a list of objects of type UnwantedCompany
+    """
     unwantedCompanies = UnwantedCompanies.objects.filter(user=username).values("symbol")
     unwanted = []
     for unwanteCompany in unwantedCompanies:
         unwanted.append(unwanteCompany["symbol"])
-    return unwanted, unwantedCompanies
+    return unwanted
 
 
 @csrf_exempt
 def FilterPointersAndCreateTheirSet(pointers_set, symbol):
+    """
+        Function filters pointers for a certain symbol and creates a set out of their names
+        Arguments:
+            pointers_set: set
+            symbol: str
+        Returns:
+            Function returns a dictionary and a set
+    """
     pointers = {}
     pointers_list = list(
         Pointers.objects.filter(company=Company.objects.get(symbol=symbol)).values("name", "value"))
@@ -68,6 +89,13 @@ def FilterPointersAndCreateTheirSet(pointers_set, symbol):
 
 @csrf_exempt
 def FilterAnnouncements(symbol):
+    """
+        Function filters announcements for a certain symbol
+        Arguments:
+            symbol: str
+        Returns:
+            Function returns a list of objects of type Announcements
+    """
     announcements = []
     announcements_list = list(
         Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
@@ -87,6 +115,13 @@ def FilterAnnouncements(symbol):
 
 @csrf_exempt
 def FilterAssemblyAnnouncements(symbol):
+    """
+        Function filters assembly announcements for a certain symbol
+        Arguments:
+            symbol: str
+        Returns:
+            Function returns a list of objects of type AssemblyAnnouncements
+    """
     assemblyAannouncements = []
     assemblyAnnouncementsList = list(
         AssemblyAnnouncements.objects.filter(company=Company.objects.get(symbol=symbol)).values("text"))
@@ -101,10 +136,17 @@ def FilterAssemblyAnnouncements(symbol):
     return assemblyAannouncements
 @csrf_exempt
 def GetPointersAndAnnouncements(username):
+    """
+        Function scrapes data about pointers and announcements
+        Arguments:
+            username: string
+        Returns:
+            Function returns a list, a list, and a set
+    """
     # getting companies
-    companies, symbols, names = GetCompaniesData()
+    symbols, names = GetCompaniesData()
     # ignoring unwanted companies
-    unwanted, unwantedCompanies = IgnoreUnwantedCompanies(username)
+    unwanted = IgnoreUnwantedCompanies(username)
     symbols_data = []
     pointers_set = set({})
     for symbol, name in zip(symbols, names):
@@ -124,8 +166,15 @@ def GetPointersAndAnnouncements(username):
 
 @csrf_exempt
 def mainpage(request):
+    """
+        Function shows the main page with scraped data
+        Arguments:
+            request: WSGIRequest
+        Returns:
+            Function returns an HttpResponse
+    """
     # getting pointers and announcements
-    scrap()
+    # scrap()
     symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
@@ -133,6 +182,13 @@ def mainpage(request):
 
 @csrf_exempt
 def filtercompanies(request):
+    """
+        Function creates a form for making companies unwanted (not visible)
+        Arguments:
+            request: WSGIRequest
+        Returns:
+            Function returns an HttpResponse
+    """
     if request.method == 'POST':
         form = FilterForm(request.POST, request.user)
         if form.is_valid():
@@ -157,6 +213,13 @@ def filtercompanies(request):
 
 @csrf_exempt
 def unfiltercompanies(request):
+    """
+        Function creates a form for making unwanted companies wanted again (making companies visible again)
+        Arguments:
+            request: WSGIRequest
+        Returns:
+            Function returns an HttpResponse
+    """
     # a line that fixes unwanted companies
     # Company.objects.all().update(wanted=True)
     if request.method == 'POST':
@@ -177,6 +240,13 @@ def unfiltercompanies(request):
 @csrf_exempt
 def registrationpage(request):
     """
+        Function creates a form for registering an account for the app
+        Arguments:
+            request: WSGIRequest
+        Returns:
+            Function returns an HttpResponse
+    """
+    """
     #a registration form if it was ever needed
     form = CreateUserForm(request.POST or None)
     if request.method == 'POST':
@@ -189,6 +259,13 @@ def registrationpage(request):
 
 @csrf_exempt
 def login(request):
+    """
+        Function creates a form for logging into the app
+        Arguments:
+            request: WSGIRequest
+        Returns:
+            Function returns an HttpResponse
+    """
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
