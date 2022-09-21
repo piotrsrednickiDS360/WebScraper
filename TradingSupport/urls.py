@@ -20,7 +20,7 @@ from django.views.generic.base import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Application urls
-    path('TradingSupportApp/', include('TradingSupportApp.urls')),
+    path('TradingSupport/', include('TradingSupportApp.urls')),
     # User authentication urls
     path("accounts/", include("django.contrib.auth.urls")),
     # Page shown when starting app

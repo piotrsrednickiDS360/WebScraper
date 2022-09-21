@@ -12,10 +12,35 @@ class AnnouncementDTO:
             text: str
             link: str
     """
+
     def __init__(self, date, text, link):
         self.date = date
         self.text = text
         self.link = link
+
+
+def GetHtmlText(link):
+    """
+            Function scrapes all data from a link
+            Arguments:
+                link: str
+            Returns:
+                Function returns a string
+    """
+    html_text = ''
+    while html_text == '':
+        try:
+            html_text = requests.get(link)
+            break
+        except Exception as e:
+            print("Error: ", e)
+            print("Connection refused by the server..")
+            print("Let me sleep for 5 seconds")
+            print("ZZzzzz...")
+            time.sleep(5)
+            print("Was a nice sleep, now let me continue...")
+            continue
+    return html_text
 
 
 def scrap_data_pointers(symbol):
@@ -27,20 +52,9 @@ def scrap_data_pointers(symbol):
             Function returns a Dictionary of objects of class Pointers
     """
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
-    html_text = ''
-    while html_text == '':
-        try:
-            html_text = requests.get(
-                "https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol)).text
-            break
-        except:
-            print("Connection refused by the server..")
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
-            time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
-            continue
-    soup = BeautifulSoup(html_text, 'lxml')
+    html_text = GetHtmlText("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol))
+
+    soup = BeautifulSoup(html_text.text, 'lxml')
     pointers = soup.find('div', {"id": "boxStockRations"})
     pointers = str(pointers).replace("</td>", "</td>\n")
     pointers = BeautifulSoup(pointers, 'lxml').text.replace("""WskaÅºniki gieÅdowe\n\n\n\n\n\n\n""", "").replace(
@@ -66,19 +80,7 @@ def scrap_data_names(symbol):
         Returns:
             Function returns a string cotaining a name of a symbol
     """
-    html_text_announcements = ''
-    while html_text_announcements == '':
-        try:
-            html_text_announcements = requests.get(
-                "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
-            break
-        except:
-            print("Connection refused by the server..")
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
-            time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
-            continue
+    html_text_announcements = GetHtmlText("https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
 
     http_encoding = html_text_announcements.encoding if 'charset' in \
                                                         html_text_announcements.headers.get('content-type',
@@ -102,20 +104,8 @@ def scrap_data_announcements(symbol):
             Function returns an array AnnouncementDTO objects
     """
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
+    html_text_announcements = GetHtmlText("https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
 
-    html_text_announcements = ''
-    while html_text_announcements == '':
-        try:
-            html_text_announcements = requests.get(
-                "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
-            break
-        except:
-            print("Connection refused by the server..")
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
-            time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
-            continue
     http_encoding = html_text_announcements.encoding if 'charset' in \
                                                         html_text_announcements.headers.get('content-type',
                                                                                             '').lower() else None
@@ -149,18 +139,7 @@ def scrap_symbols():
         Returns:
             Function returns an array of symbols (an array of strings)
     """
-    html_text = ''
-    while html_text == '':
-        try:
-            html_text = requests.get("https://www.bankier.pl/gielda/notowania/akcje")
-            break
-        except:
-            print("Connection refused by the server..")
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
-            time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
-            continue
+    html_text = GetHtmlText("https://www.bankier.pl/gielda/notowania/akcje")
 
     http_encoding = html_text.encoding if 'charset' in \
                                           html_text.headers.get('content-type',
@@ -186,21 +165,9 @@ def GetAssemblyAnnouncementData(link):
         Returns:
             Function returns lines of text as a string
     """
-    html_text_announcements = ''
-    while html_text_announcements == '':
-        try:
-            html_text_announcements = requests.get("https://" + link).text
-            break
-        except Exception as e:
-            print("Connection refused by the server..")
-            print(e)
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
-            time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
-            continue
+    html_text_announcements = GetHtmlText("https://" + link)
 
-    soup = BeautifulSoup(html_text_announcements, 'lxml')
+    soup = BeautifulSoup(html_text_announcements.text, 'lxml')
     text = soup.find("table", class_="rid2")
     text = str(text)
     text = BeautifulSoup(text, 'lxml').text
@@ -233,20 +200,8 @@ def scrap_data_assembly_announcements(symbol):
             Function returns an array of AnnouncementDTO objects
     """
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
+    html_text_announcements = GetHtmlText("https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
 
-    html_text_announcements = ''
-    while html_text_announcements == '':
-        try:
-            html_text_announcements = requests.get(
-                "https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
-            break
-        except:
-            print("Connection refused by the server..")
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
-            time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
-            continue
     http_encoding = html_text_announcements.encoding if 'charset' in \
                                                         html_text_announcements.headers.get('content-type',
                                                                                             '').lower() else None
@@ -259,8 +214,10 @@ def scrap_data_assembly_announcements(symbol):
     linkTags = soup.find_all("span", class_="entry-title")
     assemblyAnnouncements = []
     for (text, date, link) in zip(textTags, dateTags, linkTags):
+
         assemblyAnnouncementText = text.text
-        if "o zwoåani" in assemblyAnnouncementText.lower() or "danie zwoåania nad" in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower():
+        if "o zwoåani" in assemblyAnnouncementText.lower() or "danie zwoåania nad" \
+                in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower():
             index_left = str(link).find("<a href=\"") + 9
             index_right = str(link).find("\" rel")
             link = "bankier.pl" + str(link)[index_left:index_right]

@@ -52,10 +52,10 @@ MIDDLEWARE = [
 
 # Qcluster's configuration
 Q_CLUSTER = {
-    "name": "TradingSupportApp",
+    "name": "TradingSupport",
     "orm": "default",  # Use Django's ORM + database for broker
-    'timeout': 60000,
-    "retry" : 5,
+    'timeout': 10,
+    "retry" : 15,
     'ack_failures': True,
     'workers': 8,
     'recycle': 500,

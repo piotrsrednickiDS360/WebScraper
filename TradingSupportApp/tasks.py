@@ -26,6 +26,60 @@ def scrap():
     return symbols_data
 
 
+def UpdateOrCreateCompany(el):
+    try:
+        Company.objects.update_or_create(
+            symbol=el[0],
+            wanted=True,
+            name=el[1],
+        )
+    except Exception as e:
+        print('companies failed', e)
+        print(e)
+
+
+def UpdateOrCreatePointers(el):
+    try:
+        for p_key in el[2]:
+            Pointers.objects.update_or_create(
+                name=p_key,
+                value=el[2][p_key],
+                company=Company.objects.get(symbol=el[0])
+            )
+    except Exception as e:
+        print('Pointers failed', e)
+
+
+def UpdateOrCreateAnnouncements(el):
+    try:
+        for a in el[3]:
+            a.date = datetime.datetime.fromisoformat(a.date)
+            a.date = datetime.datetime.strftime(a.date, "%Y-%m-%d")
+            Announcements.objects.update_or_create(
+                text=a.text,
+                date=a.date,
+                company=Company.objects.get(symbol=el[0]),
+                link=a.link,
+            )
+    except Exception as e:
+        print('Announcements failed', e)
+
+
+def UpdateOrCreateAssemblyAnnouncements(el):
+    try:
+        for a in el[4]:
+            a.date = datetime.datetime.fromisoformat(a.date)
+            a.date = datetime.datetime.strftime(a.date, "%Y-%m-%d")
+            AssemblyAnnouncements.objects.update_or_create(
+                text=a.text,
+                date=a.date,
+                company=Company.objects.get(symbol=el[0]),
+                link=a.link,
+            )
+    except Exception as e:
+        print('Assembly announcements failed', e)
+
+
 def save_function(symbols_data):
     """
         Function turns data into elements of a database
@@ -38,52 +92,12 @@ def save_function(symbols_data):
     symbols_data_list = list(symbols_data)
     for el in symbols_data_list:
         try:
-            _company = Company.objects.update_or_create(
-                symbol=el[0],
-                wanted=True,
-                name=el[1],
-            )
+            UpdateOrCreateCompany(el)
+            UpdateOrCreatePointers(el)
+            UpdateOrCreateAnnouncements(el)
+            UpdateOrCreateAssemblyAnnouncements(el)
         except Exception as e:
-            print('companies failed', e)
-            print(e)
-            break
-    for el in symbols_data_list:
-        try:
-            for p_key in el[2]:
-                Pointers.objects.update_or_create(
-                    name=p_key,
-                    value=el[2][p_key],
-                    company=Company.objects.get(symbol=el[0])
-                )
-        except Exception as e:
-            print('Pointers failed', e)
-            break
-        try:
-            for a in el[3]:
-                a.date = datetime.datetime.fromisoformat(a.date)
-                a.date = datetime.datetime.strftime(a.date, "%Y-%m-%d")
-                Announcements.objects.update_or_create(
-                    text=a.text,
-                    date=a.date,
-                    company=Company.objects.get(symbol=el[0]),
-                    link=a.link,
-                )
-        except Exception as e:
-            print('Announcements failed', e)
-            break
-        try:
-            for a in el[4]:
-                a.date = datetime.datetime.fromisoformat(a.date)
-                a.date = datetime.datetime.strftime(a.date, "%Y-%m-%d")
-                AssemblyAnnouncements.objects.update_or_create(
-                    text=a.text,
-                    date=a.date,
-                    company=Company.objects.get(symbol=el[0]),
-                    link=a.link,
-                )
-        except Exception as e:
-            print('Assembly announcements failed', e)
-            break
+            print("Ending saving with a fail", e)
     return print('Saving finished')
 
 

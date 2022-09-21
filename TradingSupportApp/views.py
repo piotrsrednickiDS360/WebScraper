@@ -4,7 +4,7 @@ from datetime import datetime
 from .forms import LoginForm, FilterForm, UnFilterForm
 from .models import Company, UnwantedCompanies, Pointers, Announcements, AssemblyAnnouncements
 from .tasks import scrap
-from FunctionsForDataExtraction import AnnouncementDTO
+from .FunctionsForDataExtraction import AnnouncementDTO
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -252,8 +252,8 @@ def registrationpage(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})
-    return render(request, 'TradingSupportApp/registrationpage.html', {"form": form})"""
+            return render(request, 'TradingSupport/registrationpage.html', {"form": form})
+    return render(request, 'TradingSupport/registrationpage.html', {"form": form})"""
     return render(request, 'TradingSupportApp/registrationpage.html')
 
 

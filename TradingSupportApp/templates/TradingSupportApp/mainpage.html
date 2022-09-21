@@ -1,79 +1,11 @@
 {% extends "TradingSupportApp/base.html" %}
+{% load static %}
 
 {% block title %}Interface{% endblock %}
 {% block cofnij%}Wyloguj{%endblock%}
 {% block podtytulstrony %}Trading Support App Main Page{% endblock %}
+{% block stylesheet %}{% static 'TradingSupport/mainpageStyles.css' %}{% endblock %}
 {% block content %}
-<style>
-
-    table {
-        text-align: center;
-        border-collapse: collapse;
-        font-family: Tahoma, Geneva, sans-serif;
-        width: 100%;
-        table-layout: initial;
-    }
-
-    table thead th {
-        background-color: #54585d;
-        color: #ffffff;
-        font-weight: bold;
-        font-size: 13px;
-        position: sticky;
-        top: 52px;
-        z-index: 10000;
-    }
-
-
-    table tbody td {
-        color: #636363;
-        border: 1px solid #dddfe1;
-    }
-
-    table tbody tr {
-        background-color: #f9fafb;
-    }
-
-    .Green{
-        background-color: #04AA6D;
-        border: none;
-    }
-
-    .announcements-td {
-        text-align: center;
-    }
-
-    .announcements-td p {
-        display: inline-block;
-        margin: 4px 0;
-    }
-
-    .announcements-date {
-        width: 170px;
-        text-align: right;
-    }
-
-    announcements-text {
-        text-align: left;
-    }
-
-    .symbol{
-        color: #636363;
-        font-weight:bold;
-        text-decoration: none;
-        padding:15px;
-    }
-
-    .symbol:hover {
-        color: #04AA6D;
-    }
-    .symbol-td{
-        width:20%;
-    }
-
-
-</style>
-
     <div class="fixTableHead">
         <table>
             <thead>
