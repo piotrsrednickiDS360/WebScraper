@@ -1,13 +1,12 @@
-from bs4 import BeautifulSoup
-from bs4.dammit import EncodingDetector
-import requests
 import time
 import requests
+import docx2txt
+from bs4 import BeautifulSoup
+from bs4.dammit import EncodingDetector
 from urllib.request import Request, urlopen
 from PyPDF2 import PdfFileReader
-import requests
-import docx2txt
 from io import BytesIO
+
 
 class AnnouncementDTO:
     """
@@ -174,10 +173,14 @@ def GetAssemblyAnnouncementDataFromPdfFile(link):
     remote_file = urlopen(Request(link)).read()
     memory_file = BytesIO(remote_file)
     pdf_file = PdfFileReader(memory_file)
-    page_content=""
-    for page in pdf_file.pages:
-        page_content += page.extractText()
-    print(page_content)
+    text = pdf_file.pages[0].extractText()
+    text=text[500:]
+    print(text)
+    if "zniesieni" in text or "wycofani" in text:
+        return text
+    else:
+        return ""
+
 
 def GetAssemblyAnnouncementDataFromWordFile(link):
     """
@@ -188,9 +191,13 @@ def GetAssemblyAnnouncementDataFromWordFile(link):
                 Function returns lines of text as a string
     """
 
-    # document = BytesIO(requests.get(link).content)
-    # text = docx2txt.process(document)
-    # print(text)
+    document = BytesIO(requests.get(link).content)
+    text = docx2txt.process(document)
+    if "zniesieni" in text or "wycofani" in text:
+        return text
+    else:
+        return ""
+    return text
 
 
 def GetAssemblyAnnouncementDataFromFile(link):
@@ -205,18 +212,17 @@ def GetAssemblyAnnouncementDataFromFile(link):
     soup = BeautifulSoup(html_text_announcements.text, 'lxml')
     fileLink = soup.find("table", class_="rid2")
     index_left = str(fileLink).find("<a href=\"/static") + 9
-    print(index_left)
     fileLink = str(fileLink)[index_left:]
     index_right = str(fileLink).find("\">")
-    print(index_right)
     fileLink = str(fileLink)[:index_right]
     fileLink = "https://bankier.pl" + fileLink
-    print(fileLink)
     if fileLink.endswith(".docx"):
         text = GetAssemblyAnnouncementDataFromWordFile(fileLink)
     elif fileLink.endswith(".pdf"):
         text = GetAssemblyAnnouncementDataFromPdfFile(fileLink)
-    return fileLink
+    else:
+        text = GetAssemblyAnnouncementData(fileLink)
+    return text
 
 
 def GetAssemblyAnnouncementData(link):
