@@ -12,7 +12,8 @@ def scrap():
         Returns:
             Function returns an array representing data associated with a symbol
     """
-    symbols = scrap_symbols()
+    #symbols = scrap_symbols()
+    symbols = ["GROCLIN","LPP"]
     symbols_data = []
     for symbol in symbols:
         # wskaźniki giełdowe
@@ -27,6 +28,13 @@ def scrap():
 
 
 def UpdateOrCreateCompany(el):
+    """
+            Function updates and creates objects of type Company that were scraped
+            Arguments:
+                el: list
+            Returns:
+                Function returns None
+    """
     try:
         Company.objects.update_or_create(
             symbol=el[0],
@@ -39,6 +47,13 @@ def UpdateOrCreateCompany(el):
 
 
 def UpdateOrCreatePointers(el):
+    """
+                Function updates and creates objects of type Pointers that were scraped
+                Arguments:
+                    el: list
+                Returns:
+                    Function returns None
+    """
     try:
         for p_key in el[2]:
             Pointers.objects.update_or_create(
@@ -51,6 +66,13 @@ def UpdateOrCreatePointers(el):
 
 
 def UpdateOrCreateAnnouncements(el):
+    """
+                Function updates and creates objects of type Announcements that were scraped
+                Arguments:
+                    el: list
+                Returns:
+                    Function returns None
+    """
     try:
         for a in el[3]:
             a.date = datetime.datetime.fromisoformat(a.date)
@@ -66,6 +88,13 @@ def UpdateOrCreateAnnouncements(el):
 
 
 def UpdateOrCreateAssemblyAnnouncements(el):
+    """
+                Function updates and creates objects of type AssemblyAnnouncements that were scraped
+                Arguments:
+                    el: list
+                Returns:
+                    Function returns None
+    """
     try:
         for a in el[4]:
             a.date = datetime.datetime.fromisoformat(a.date)
@@ -110,9 +139,10 @@ def delete_older_function():
     """
     print("Start deleting:")
     try:
-        how_many_days = datetime.datetime.now() - datetime.timedelta(days=21)
-        Announcements.objects.filter(date__lte=how_many_days).delete()
-        AssemblyAnnouncements.objects.filter(date__lte=how_many_days).delete()
+        how_many_days_announcements = datetime.datetime.now() - datetime.timedelta(days=21)
+        Announcements.objects.filter(date__lte=how_many_days_announcements).delete()
+        how_many_days_assembly_announcements = datetime.datetime.now() - datetime.timedelta(days=100)
+        AssemblyAnnouncements.objects.filter(date__lte=how_many_days_assembly_announcements).delete()
     except Exception as e:
         print('failed deleting')
         print(e)

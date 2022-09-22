@@ -2,7 +2,12 @@ from bs4 import BeautifulSoup
 from bs4.dammit import EncodingDetector
 import requests
 import time
-
+import requests
+from urllib.request import Request, urlopen
+from PyPDF2 import PdfFileReader
+import requests
+import docx2txt
+from io import BytesIO
 
 class AnnouncementDTO:
     """
@@ -157,6 +162,63 @@ def scrap_symbols():
     return symbols_bufor
 
 
+def GetAssemblyAnnouncementDataFromPdfFile(link):
+    """
+            Function scrapes data from a Pdf file from the link about an assembly announcement
+            Arguments:
+                link: str
+            Returns:
+                Function returns lines of text as a string
+    """
+
+    remote_file = urlopen(Request(link)).read()
+    memory_file = BytesIO(remote_file)
+    pdf_file = PdfFileReader(memory_file)
+    page_content=""
+    for page in pdf_file.pages:
+        page_content += page.extractText()
+    print(page_content)
+
+def GetAssemblyAnnouncementDataFromWordFile(link):
+    """
+            Function scrapes data from a Word file from the link about an assembly announcement
+            Arguments:
+                link: str
+            Returns:
+                Function returns lines of text as a string
+    """
+
+    # document = BytesIO(requests.get(link).content)
+    # text = docx2txt.process(document)
+    # print(text)
+
+
+def GetAssemblyAnnouncementDataFromFile(link):
+    """
+        Function scrapes data from a file from the link about an assembly announcement
+        Arguments:
+            link: str
+        Returns:
+            Function returns lines of text as a string
+    """
+    html_text_announcements = GetHtmlText("https://" + link)
+    soup = BeautifulSoup(html_text_announcements.text, 'lxml')
+    fileLink = soup.find("table", class_="rid2")
+    index_left = str(fileLink).find("<a href=\"/static") + 9
+    print(index_left)
+    fileLink = str(fileLink)[index_left:]
+    index_right = str(fileLink).find("\">")
+    print(index_right)
+    fileLink = str(fileLink)[:index_right]
+    fileLink = "https://bankier.pl" + fileLink
+    print(fileLink)
+    if fileLink.endswith(".docx"):
+        text = GetAssemblyAnnouncementDataFromWordFile(fileLink)
+    elif fileLink.endswith(".pdf"):
+        text = GetAssemblyAnnouncementDataFromPdfFile(fileLink)
+    return fileLink
+
+
 def GetAssemblyAnnouncementData(link):
     """
         Function scrapes data about an assembly announcement from the link
@@ -166,7 +228,6 @@ def GetAssemblyAnnouncementData(link):
             Function returns lines of text as a string
     """
     html_text_announcements = GetHtmlText("https://" + link)
-
     soup = BeautifulSoup(html_text_announcements.text, 'lxml')
     text = soup.find("table", class_="rid2")
     text = str(text)
@@ -221,7 +282,7 @@ def scrap_data_assembly_announcements(symbol):
             index_left = str(link).find("<a href=\"") + 9
             index_right = str(link).find("\" rel")
             link = "bankier.pl" + str(link)[index_left:index_right]
-            assemblyAnnouncementText = GetAssemblyAnnouncementData(link)
+            assemblyAnnouncementText = GetAssemblyAnnouncementDataFromFile(link)
             if assemblyAnnouncementText == "":
                 assemblyAnnouncementText = "Certain information not found"
             a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,

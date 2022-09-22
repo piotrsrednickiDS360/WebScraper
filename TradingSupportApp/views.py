@@ -113,6 +113,7 @@ def FilterAnnouncements(symbol):
         announcements.append(a)
     return announcements
 
+
 @csrf_exempt
 def FilterAssemblyAnnouncements(symbol):
     """
@@ -134,6 +135,8 @@ def FilterAssemblyAnnouncements(symbol):
         a = AnnouncementDTO(date['date'], text['text'], link["link"])
         assemblyAannouncements.append(a)
     return assemblyAannouncements
+
+
 @csrf_exempt
 def GetPointersAndAnnouncements(username):
     """
@@ -174,7 +177,7 @@ def mainpage(request):
             Function returns an HttpResponse
     """
     # getting pointers and announcements
-    # scrap()
+    scrap()
     symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
