@@ -186,7 +186,7 @@ def mainpage(request):
             Function returns an HttpResponse
     """
     # getting pointers and announcements
-    scrap()
+    # scrap()
     symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
