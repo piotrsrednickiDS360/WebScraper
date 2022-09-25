@@ -37,12 +37,10 @@ def GetHtmlText(link):
             html_text = requests.get(link)
             break
         except Exception as e:
-            print("Error: ", e)
+            print("Error with GetHtmlText: ", e)
+            print("Link:", link)
             print("Connection refused by the server..")
-            print("Let me sleep for 5 seconds")
-            print("ZZzzzz...")
             time.sleep(5)
-            print("Was a nice sleep, now let me continue...")
             continue
     return html_text
 
@@ -57,7 +55,6 @@ def scrap_data_pointers(symbol):
     """
     # połączenie ze stroną bankier i pobranie strony z danym symbolem
     html_text = GetHtmlText("https://www.bankier.pl/inwestowanie/profile/quote.html?symbol={}".format(symbol))
-
     soup = BeautifulSoup(html_text.text, 'lxml')
     pointers = soup.find('div', {"id": "boxStockRations"})
     pointers = str(pointers).replace("</td>", "</td>\n")
@@ -99,7 +96,7 @@ def scrap_data_names(symbol):
     return name
 
 
-def scrap_data_announcements(symbol):
+def scrap_data_announcements_and_assembly(symbol):
     """
         Function scrapes information about announcements from bankier.pl
         Arguments:
@@ -130,10 +127,32 @@ def scrap_data_announcements(symbol):
             index_left = str(link).find("<a href=\"") + 9
             index_right = str(link).find("\" rel")
             announcementText = "Nabycie akcji własnych"
+
             a = AnnouncementDTO(date['datetime'], announcementText, "bankier.pl" + str(link)[index_left:index_right])
-            # a = AnnouncementDTO(date.text, announcementText) # date without formating
             announcements.append(a)
-    return announcements
+    soup = BeautifulSoup(html_text_announcements.text, 'lxml', from_encoding=encoding)
+    # komunikaty
+    textTags = soup.find_all("span", class_="entry-title")
+    dateTags = soup.find_all("time", class_="entry-date")
+    linkTags = soup.find_all("span", class_="entry-title")
+    assemblyAnnouncements = []
+    for (text, date, link) in zip(textTags, dateTags, linkTags):
+
+        assemblyAnnouncementText = text.text
+        if "o zwoåani" in assemblyAnnouncementText.lower() or "danie zwoåania nad" \
+                in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower():
+            index_left = str(link).find("href=\"") + 6
+            index_right = str(link).find(".html\"") + 5
+            link = "bankier.pl" + str(link)[index_left:index_right]
+            assemblyAnnouncementText = GetAssemblyAnnouncementDataFromFileOrText(link)
+            if assemblyAnnouncementText == "":
+                assemblyAnnouncementText = "No important information"
+            else:
+                assemblyAnnouncementText = "Found importand information"
+            a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,
+                                link)
+            assemblyAnnouncements.append(a)
+    return announcements, assemblyAnnouncements
 
 
 def scrap_symbols():
@@ -174,8 +193,7 @@ def GetAssemblyAnnouncementDataFromPdfFile(link):
     memory_file = BytesIO(remote_file)
     pdf_file = PdfFileReader(memory_file)
     text = pdf_file.pages[0].extractText()
-    text=text[500:]
-    print(text)
+    text = text[500:]
     if "zniesieni" in text or "wycofani" in text:
         return text
     else:
@@ -197,10 +215,9 @@ def GetAssemblyAnnouncementDataFromWordFile(link):
         return text
     else:
         return ""
-    return text
 
 
-def GetAssemblyAnnouncementDataFromFile(link):
+def GetAssemblyAnnouncementDataFromFileOrText(link):
     """
         Function scrapes data from a file from the link about an assembly announcement
         Arguments:
@@ -221,7 +238,7 @@ def GetAssemblyAnnouncementDataFromFile(link):
     elif fileLink.endswith(".pdf"):
         text = GetAssemblyAnnouncementDataFromPdfFile(fileLink)
     else:
-        text = GetAssemblyAnnouncementData(fileLink)
+        text = GetAssemblyAnnouncementData(link)
     return text
 
 
@@ -285,12 +302,14 @@ def scrap_data_assembly_announcements(symbol):
         assemblyAnnouncementText = text.text
         if "o zwoåani" in assemblyAnnouncementText.lower() or "danie zwoåania nad" \
                 in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower():
-            index_left = str(link).find("<a href=\"") + 9
-            index_right = str(link).find("\" rel")
+            index_left = str(link).find("href=\"") + 6
+            index_right = str(link).find(".html\"") + 5
             link = "bankier.pl" + str(link)[index_left:index_right]
-            assemblyAnnouncementText = GetAssemblyAnnouncementDataFromFile(link)
+            assemblyAnnouncementText = GetAssemblyAnnouncementDataFromFileOrText(link)
             if assemblyAnnouncementText == "":
-                assemblyAnnouncementText = "Certain information not found"
+                assemblyAnnouncementText = "No important information"
+            else:
+                assemblyAnnouncementText = "Found importand information"
             a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,
                                 link)
             assemblyAnnouncements.append(a)

@@ -6,6 +6,7 @@ from .models import Company, UnwantedCompanies, Pointers, Announcements, Assembl
 from .tasks import scrap
 from .FunctionsForDataExtraction import AnnouncementDTO
 from django.views.decorators.csrf import csrf_exempt
+from babel.dates import format_date
 
 
 @csrf_exempt
@@ -105,11 +106,16 @@ def FilterAnnouncements(symbol):
         Announcements.objects.filter(company=Company.objects.get(symbol=symbol)).values("link"))
     # change type of data in announcements
     for (text, date, link) in zip(announcements_list, date_list, link_list):
-        a = AnnouncementDTO(date['date'], text['text'], link["link"])
+
+        print(date['date'])
         # Filter announcements older than 30 days
-        time_between_insertion = datetime.now().date() - a.date
+        time_between_insertion = datetime.now().date() - date['date']
         if time_between_insertion.days > 30:
             continue
+        date = str(date['date'])
+        date = datetime.strptime(date, '%Y-%m-%d')
+        date = format_date(date, 'd MMMM yyyy', locale='pl_PL')
+        a = AnnouncementDTO(date, text['text'], link["link"])
         announcements.append(a)
     return announcements
 
@@ -132,7 +138,10 @@ def FilterAssemblyAnnouncements(symbol):
         AssemblyAnnouncements.objects.filter(company=Company.objects.get(symbol=symbol)).values("link"))
     # change type of data in announcements
     for (text, date, link) in zip(assemblyAnnouncementsList, dateList, linkList):
-        a = AnnouncementDTO(date['date'], text['text'], link["link"])
+        date = str(date['date'])
+        date = datetime.strptime(date, '%Y-%m-%d')
+        date = format_date(date, 'd MMMM yyyy', locale='pl_PL')
+        a = AnnouncementDTO(date, text['text'], link["link"])
         assemblyAannouncements.append(a)
     return assemblyAannouncements
 

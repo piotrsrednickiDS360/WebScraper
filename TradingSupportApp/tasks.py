@@ -1,5 +1,5 @@
 from datetime import datetime
-from TradingSupportApp.FunctionsForDataExtraction import scrap_data_announcements, \
+from TradingSupportApp.FunctionsForDataExtraction import scrap_data_announcements_and_assembly, \
     scrap_data_pointers, \
     scrap_symbols, scrap_data_names, scrap_data_assembly_announcements
 from TradingSupportApp.models import *
@@ -12,16 +12,17 @@ def scrap():
         Returns:
             Function returns an array representing data associated with a symbol
     """
-    #symbols = scrap_symbols()
-    symbols = ["GROCLIN","LPP"]
+    symbols = scrap_symbols()
     symbols_data = []
+    symbolIndex = 1
     for symbol in symbols:
+        print("symbol #{}.".format(symbolIndex))
         # wskaźniki giełdowe
-        announcements = scrap_data_announcements(symbol)
+        announcements, assemblyAnnouncements = scrap_data_announcements_and_assembly(symbol)
         pointers = scrap_data_pointers(symbol)
         name = scrap_data_names(symbol)
-        assemblyAnnouncements = scrap_data_assembly_announcements(symbol)
         symbols_data.append([symbol, name, pointers, announcements, assemblyAnnouncements])
+        symbolIndex += 1
     delete_older_function()
     save_function(symbols_data)
     return symbols_data
