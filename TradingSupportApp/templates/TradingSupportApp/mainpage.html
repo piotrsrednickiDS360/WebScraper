@@ -4,9 +4,11 @@
 {% block title %}Interface{% endblock %}
 {% block cofnij%}Wyloguj{%endblock%}
 {% block podtytulstrony %}Trading Support App Main Page{% endblock %}
+{% block stylesheet %}{% static 'TradingSupport/mainpageStyles.css' %}{% endblock %}
+{% block content %}
 <style>
 
-    .TopOfWindow{
+.TopOfWindow{
     background-color: #333;
     border-color: #340744;
     color:#f2f2f2;
@@ -167,7 +169,6 @@ table {
         width:20%;
     }
 </style>
-{% block content %}
     <div class="fixTableHead">
         <table>
             <thead>
