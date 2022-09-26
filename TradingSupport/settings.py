@@ -55,7 +55,7 @@ Q_CLUSTER = {
     "name": "TradingSupport",
     "orm": "default",  # Use Django's ORM + database for broker
     'timeout': 10,
-    "retry" : 15,
+    "retry": 15,
     'ack_failures': True,
     'workers': 8,
     'recycle': 500,
@@ -131,8 +131,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS=(
-    os.path.join(BASE_DIR,"static"),
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
     '/TradingSupportApp/static/',
     '/TradingSupportApp/static/TradingSupport',
 
@@ -149,4 +149,6 @@ CSRF_COOKIE_DOMAIN = None
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 DCS_SESSION_COOKIE_SAMESITE = "None"
-CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com','https://*.127.0.0.1','https://trading-support-app.herokuapp.com','https://trading-support-application.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com', 'https://*.127.0.0.1',
+                        'https://trading-support-app.herokuapp.com',
+                        'https://trading-support-application.herokuapp.com']
