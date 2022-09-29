@@ -146,9 +146,9 @@ def scrap_data_announcements_and_assembly(symbol):
             link = "bankier.pl" + str(link)[index_left:index_right]
             assemblyAnnouncementText = GetAssemblyAnnouncementDataFromFileOrText(link)
             if assemblyAnnouncementText == "":
-                assemblyAnnouncementText = "No important information"
+                continue
             else:
-                assemblyAnnouncementText = "Found importand information"
+                assemblyAnnouncementText = "Ogłoszenie zgromadzenia z ważną informacją"
             a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,
                                 link)
             assemblyAnnouncements.append(a)
@@ -307,9 +307,8 @@ def scrap_data_assembly_announcements(symbol):
             link = "bankier.pl" + str(link)[index_left:index_right]
             assemblyAnnouncementText = GetAssemblyAnnouncementDataFromFileOrText(link)
             if assemblyAnnouncementText == "":
-                assemblyAnnouncementText = "No important information"
-            else:
-                assemblyAnnouncementText = "Found importand information"
+                continue
+            assemblyAnnouncementText = "Ogłoszenie zgromadzenia z ważną informacją"
             a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,
                                 link)
             assemblyAnnouncements.append(a)

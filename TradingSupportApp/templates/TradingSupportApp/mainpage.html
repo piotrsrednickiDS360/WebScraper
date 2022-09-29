@@ -178,7 +178,6 @@ table {
                     {% for element in pointers_set %}
                         <th>{{ element }}</th>
                     {% endfor %}
-                    <th>ogłoszenia zgromadzeń</th>
                 </tr>
             </thead>
             <tbody>
@@ -200,17 +199,6 @@ table {
                                 {% endwith %}
                                 <br>
                             {% endfor %}
-                        </td>
-                        {% for element in pointers_set %}
-                            <td>
-                                {% for key,value in pointers.items %}
-                                    {% if key == element %}
-                                        <p>{{ value }}</p>
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                        {% endfor %}
-                        <td class="announcements-td">
                             {% for assemblyAnnouncement in assemblyAnnouncements %}
                                 {% with  link=assemblyAnnouncement.link %}
                                     <a class="symbol" href="https://{{ link }}">
@@ -221,6 +209,15 @@ table {
                                 <br>
                             {% endfor %}
                         </td>
+                        {% for element in pointers_set %}
+                            <td>
+                                {% for key,value in pointers.items %}
+                                    {% if key == element %}
+                                        <p>{{ value }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
                     </tr>
                 {% endfor %}
             </tbody>

@@ -142,7 +142,7 @@ def delete_older_function():
     try:
         how_many_days_announcements = datetime.datetime.now() - datetime.timedelta(days=21)
         Announcements.objects.filter(date__lte=how_many_days_announcements).delete()
-        how_many_days_assembly_announcements = datetime.datetime.now() - datetime.timedelta(days=100)
+        how_many_days_assembly_announcements = datetime.datetime.now() - datetime.timedelta(days=500)
         AssemblyAnnouncements.objects.filter(date__lte=how_many_days_assembly_announcements).delete()
     except Exception as e:
         print('failed deleting')

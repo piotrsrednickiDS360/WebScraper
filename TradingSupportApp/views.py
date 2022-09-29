@@ -168,7 +168,7 @@ def GetPointersAndAnnouncements(username):
         # getting pointers and announcements from database and changing their representation
         announcements = FilterAnnouncements(symbol)
         assemblyAnnouncements = FilterAssemblyAnnouncements(symbol)
-        if len(announcements) == 0:
+        if len(assemblyAnnouncements) == 0:
             continue
         pointers, pointers_set = FilterPointersAndCreateTheirSet(pointers_set, symbol)
         # add data to list
@@ -186,7 +186,8 @@ def mainpage(request):
             Function returns an HttpResponse
     """
     # getting pointers and announcements
-    # scrap()
+    #
+    scrap()
     symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
