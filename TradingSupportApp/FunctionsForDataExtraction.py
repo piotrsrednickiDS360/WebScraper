@@ -191,7 +191,7 @@ def GetAssemblyAnnouncementDataFromPdfFile(link):
 
     remote_file = urlopen(Request(link)).read()
     memory_file = BytesIO(remote_file)
-    pdf_file = PdfFileReader(memory_file)
+    pdf_file = PdfFileReader(memory_file,strict=False)
     text = pdf_file.pages[0].extractText()
     text = text[500:]
     if "zniesieni" in text or "wycofani" in text:

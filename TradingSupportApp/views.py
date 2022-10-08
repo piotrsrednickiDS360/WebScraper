@@ -3,10 +3,19 @@ from django.template import loader
 from datetime import datetime
 from .forms import LoginForm, FilterForm, UnFilterForm
 from .models import Company, UnwantedCompanies, Pointers, Announcements, AssemblyAnnouncements
-from .tasks import scrap
 from .FunctionsForDataExtraction import AnnouncementDTO
 from django.views.decorators.csrf import csrf_exempt
 from babel.dates import format_date
+from django_q.tasks import async_task
+from django_q.models import Schedule
+
+
+def run_asynch_task():
+    schedule = Schedule.objects.create(
+        name="asynch_task",
+        func="TradingSupportApp.tasks.scrap",
+        schedule_type=Schedule.DAILY,
+    )
 
 
 @csrf_exempt
@@ -107,7 +116,6 @@ def FilterAnnouncements(symbol):
     # change type of data in announcements
     for (text, date, link) in zip(announcements_list, date_list, link_list):
 
-        print(date['date'])
         # Filter announcements older than 30 days
         time_between_insertion = datetime.now().date() - date['date']
         if time_between_insertion.days > 30:
@@ -189,6 +197,7 @@ def mainpage(request):
     #
     # scrap()
     symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
+
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
 
@@ -207,7 +216,6 @@ def filtercompanies(request):
         if form.is_valid():
             template = loader.get_template('TradingSupportApp/filtercompanies.html')
             company = Company.objects.filter(symbol=form.cleaned_data['symbol'])
-            print(Company.objects.count())
             name = Company.objects.get(symbol=form.cleaned_data['symbol']).name
             unwantedCompany = UnwantedCompanies(UnwantedCompanies.objects.count(), form.cleaned_data['symbol'], False,
                                                 name,
@@ -288,3 +296,16 @@ def login(request):
             password = form.cleaned_data.get('email')
     form = LoginForm()
     return render(request, 'TradingSupportApp/mainpage.html', {'form': form})
+
+
+@csrf_exempt
+def asynch_page(request):
+    """
+        Function creates a form for logging into the app
+        Arguments:
+            request: WSGIRequest
+        Returns:
+            Function returns an HttpResponse
+    """
+    run_asynch_task()
+    return render(request, 'TradingSupportApp/mainpage.html')

@@ -3,7 +3,8 @@ from TradingSupportApp.FunctionsForDataExtraction import scrap_data_announcement
     scrap_data_pointers, \
     scrap_symbols, scrap_data_names, scrap_data_assembly_announcements
 from TradingSupportApp.models import *
-
+from django_q.tasks import async_task
+from django_q.models import Schedule
 
 def scrap():
     """
@@ -13,6 +14,7 @@ def scrap():
             Function returns an array representing data associated with a symbol
     """
     symbols = scrap_symbols()
+    #symbols = ["ATLASEST", "KREC"]
     symbols_data = []
     symbolIndex = 1
     for symbol in symbols:

@@ -54,11 +54,14 @@ MIDDLEWARE = [
 Q_CLUSTER = {
     "name": "TradingSupport",
     "orm": "default",  # Use Django's ORM + database for broker
-    'timeout': 10,
-    "retry": 15,
-    'ack_failures': True,
-    'workers': 8,
+    'workers': 1,
     'recycle': 500,
+    'timeout': 60000,
+    'compress': True,
+    'save_limit': 250,
+    'queue_limit': 500,
+    'cpu_affinity': 1,
+    'label': 'Django Q',
     'db': {
         'host': '127.0.0.1',
         'port': 6379,
