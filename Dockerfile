@@ -16,3 +16,4 @@ COPY . /code/
 
 # Using gunicorn for heroku as a dyno
 CMD gunicorn TradingSupport.wsgi:application
+CMD python manage.py createsuperuser --noinput
