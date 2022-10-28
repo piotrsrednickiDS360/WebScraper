@@ -149,9 +149,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
 # Resolving issues with CSRF blocking site launch
 CSRF_COOKIE_DOMAIN = None
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
 DCS_SESSION_COOKIE_SAMESITE = "None"
 CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com', 'https://*.127.0.0.1',
                         'https://trading-support-app.herokuapp.com',
-                        'https://trading-support-application.herokuapp.com']
+                        'https://trading-support-application.herokuapp.com','*','http://piotrsrednicki.pythonanywhere.com']
