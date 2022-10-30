@@ -10,6 +10,7 @@ from django_q.tasks import async_task
 from django_q.models import Schedule
 
 
+
 def run_asynch_task():
     schedule = Schedule.objects.create(
         name="asynch_task",

@@ -4,7 +4,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'TradingSupport.settings'
 import django
 django.setup()
 
-from datetime import datetime
+import datetime
 from TradingSupportApp.FunctionsForDataExtraction import scrap_data_announcements_and_assembly, \
     scrap_data_pointers, \
     scrap_symbols, scrap_data_names, scrap_data_assembly_announcements, AnnouncementDTO
@@ -91,11 +91,11 @@ def FilterAnnouncements(symbol):
     for (text, date, link) in zip(announcements_list, date_list, link_list):
 
         # Filter announcements older than 30 days
-        time_between_insertion = datetime.now().date() - date['date']
+        time_between_insertion = datetime.datetime.now().date() - date['date']
         if time_between_insertion.days > 30:
             continue
         date = str(date['date'])
-        date = datetime.strptime(date, '%Y-%m-%d')
+        date = datetime.datetime.strptime(date, '%Y-%m-%d')
         date = format_date(date, 'd MMMM yyyy', locale='pl_PL')
         a = AnnouncementDTO(date, text['text'], link["link"])
         announcements.append(a)
@@ -120,7 +120,7 @@ def FilterAssemblyAnnouncements(symbol):
     # change type of data in announcements
     for (text, date, link) in zip(assemblyAnnouncementsList, dateList, linkList):
         date = str(date['date'])
-        date = datetime.strptime(date, '%Y-%m-%d')
+        date = datetime.datetime.strptime(date, '%Y-%m-%d')
         date = format_date(date, 'd MMMM yyyy', locale='pl_PL')
         a = AnnouncementDTO(date, text['text'], link["link"])
         assemblyAannouncements.append(a)
@@ -178,8 +178,8 @@ def scrap():
         Returns:
             Function returns an array representing data associated with a symbol
     """
-    #symbols = scrap_symbols()
-    symbols = ["ATLASEST", "KREC"]
+    symbols = scrap_symbols()
+    # symbols = ["ATLASEST", "KREC"]
     symbols_data = []
     symbolIndex = 1
     for symbol in symbols:

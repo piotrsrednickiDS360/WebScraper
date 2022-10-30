@@ -152,4 +152,4 @@ CSRF_COOKIE_DOMAIN = None
 DCS_SESSION_COOKIE_SAMESITE = "None"
 CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com', 'https://*.127.0.0.1',
                         'https://trading-support-app.herokuapp.com',
-                        'https://trading-support-application.herokuapp.com','*','http://piotrsrednicki.pythonanywhere.com']
+                        'https://trading-support-application.herokuapp.com','http://piotrsrednicki.pythonanywhere.com']
