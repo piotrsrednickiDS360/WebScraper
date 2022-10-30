@@ -1,0 +1,5 @@
+cd ~;
+source /home/piotrsrednicki/.virtualenvs/myenv/bin/activate;
+cd /home/piotrsrednicki/WebScraper/TradingSupportApp;
+python tasks.py;
+deactivate
