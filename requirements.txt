@@ -1,7 +1,7 @@
 tutor==14.0.4
 beautifulsoup4==4.11.1
 bs4==0.0.1
-Django>=4.0
+Django>=1.9
 django-background-tasks==1.2.5
 django-compat==1.0.15
 django-picklefield==3.1
