@@ -139,7 +139,7 @@ def scrap_data_announcements_and_assembly(symbol):
     for (text, date, link) in zip(textTags, dateTags, linkTags):
 
         assemblyAnnouncementText = text.text
-        if "o zwoåani" in assemblyAnnouncementText.lower() or "danie zwoåania nad" \
+        if "zwoåaniu nad" in assemblyAnnouncementText.lower() or "zwoåania nad" \
                 in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower():
             index_left = str(link).find("href=\"") + 6
             index_right = str(link).find(".html\"") + 5
