@@ -4,13 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="description" content="Home page">
-    <link rel="stylesheet" type="text/css" href="{% static 'TradingSupportApp/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'TradingSupport/loginStyles.css' %}">
     <title>Trading Support App Login</title>
 </head>
-
-
 <style>
-.TopOfWindow{
+
+    .TopOfWindow{
     background-color: #333;
     border-color: #340744;
     color:#f2f2f2;
@@ -53,10 +52,9 @@ body{
     margin:5px;
 }
 </style>
-
 <body>
     <div>
-        <h1 class="TopOfWindow">Trading Support App<div>{% block podtytulstrony %}Login Screen{% endblock %}</div></h1>
+        <h1 class="TopOfWindow">Trading Support App{% block podtytulstrony %}Login Screen{% endblock %}</h1>
         <div class="formularz">
             <form method="POST">
                 {% csrf_token %}

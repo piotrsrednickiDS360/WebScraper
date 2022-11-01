@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  # Postgres database service
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "6379:6379"
+  # Run django server service
+  web:
+    build: .
+    command:
+      bash -c "python manage.py runserver 0.0.0.0:8000"
+      bash -c "python manage.py createsuperuser --username marvin123 --password owca12345 --noinput --email 'root@ds360.pl'"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  # Create a qcluster service for asynchronous tasks
+  worker:
+    build: .
+    command: python manage.py qcluster
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8001"
+    depends_on:
+      - db

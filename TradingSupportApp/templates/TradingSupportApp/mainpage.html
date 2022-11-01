@@ -1,12 +1,110 @@
 {% extends "TradingSupportApp/base.html" %}
+{% load static %}
 
 {% block title %}Interface{% endblock %}
 {% block cofnij%}Wyloguj{%endblock%}
 {% block podtytulstrony %}Trading Support App Main Page{% endblock %}
+{% block stylesheet %}{% static 'TradingSupport/mainpageStyles.css' %}{% endblock %}
 {% block content %}
 <style>
 
-    table {
+.TopOfWindow{
+    background-color: #333;
+    border-color: #340744;
+    color:#f2f2f2;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:100;
+    text-align: center;
+    font-size: 20px;
+    font-family: Tahoma, Geneva, sans-serif;
+    padding: 14px 16px;
+}
+
+.btn {
+    border-left-style:solid;
+    border-width:5px;
+    border-color:#54585d;
+    position: fixed;
+    z-index:101;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 40px;
+    background-color: #522d5b;
+    text-align:center;
+    background-color: #333;
+    color:#f2f2f2;
+    font-size:24px;
+    padding-top:12px;
+}
+
+.FilterButton{
+    margin-right:210px;
+}
+
+.UnFilterButton{
+    margin-right:315px;
+}
+
+.MainButton{
+    margin-right:105px;
+}
+
+.Scrap{
+    margin-right:420px;
+}
+
+.LoggedAs{
+    border-right-style:solid;
+    border-width:5px;
+    border-color:#54585d;
+    position: fixed;
+    z-index:101;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 40px;
+    background-color: #522d5b;
+    text-align:center;
+    background-color: #333;
+    color:#f2f2f2;
+    font-size:24px;
+    padding-top:12px;
+}
+
+.MainTable{
+    margin-top:52px;
+}
+
+body{
+    background-color: #f9fafb;
+    min-height: 100vh;
+    margin:0;
+
+}
+/* unvisited link */
+.btn a:link {
+  color: #f2f2f2;
+}
+
+/* visited link */
+.btn a:visited {
+  color: #f2f2f2;
+}
+
+/* mouse over link */
+.btn a:hover {
+  color: red;
+}
+
+/* selected link */
+.btn a:active {
+  color: blue;
+}
+
+table {
         text-align: center;
         border-collapse: collapse;
         font-family: Tahoma, Geneva, sans-serif;
@@ -49,7 +147,7 @@
     }
 
     .announcements-date {
-        width: 120px;
+        width: 170px;
         text-align: right;
     }
 
@@ -61,17 +159,16 @@
         color: #636363;
         font-weight:bold;
         text-decoration: none;
+        padding:15px;
     }
 
     .symbol:hover {
         color: #04AA6D;
     }
-
-
-
-
+    .symbol-td{
+        width:20%;
+    }
 </style>
-
     <div class="fixTableHead">
         <table>
             <thead>
@@ -84,24 +181,37 @@
                 </tr>
             </thead>
             <tbody>
-                {% for symbol,onedata in symbols_data  %}
+                {% for symbol,name,pointers,announcements,assemblyAnnouncements in symbols_data  %}
                     <tr>
-                        <td>
+                        <td class="symbol-td">
                             {% with  link="https://www.bankier.pl/inwestowanie/profile/quote.html?symbol=" %}
                                 <a class="symbol" href={{ link|add:symbol }}> {{ symbol }} </a>
+                                <p class="name">{{ name }}</p>
                             {% endwith %}
                         </td>
                         <td class="announcements-td">
-                            {% for announcement in onedata.1 %}
-                                <p class="announcements-date">{{ announcement.date}} :</p>
-                                <p class="announcements-text">{{announcement.text}}</p>
-{#                                <p class="announcements">{{ announcement.date}} : {{announcement.text}}</p>#}
+                            {% for announcement in announcements %}
+                                {% with  link=announcement.link %}
+                                    <a class="symbol" href="https://{{ link }}">
+                                        <p class="announcements-date">{{ announcement.date}} :</p>
+                                        <p class="announcements-text">{{announcement.text}}</p>
+                                    </a>
+                                {% endwith %}
+                                <br>
+                            {% endfor %}
+                            {% for assemblyAnnouncement in assemblyAnnouncements %}
+                                {% with  link=assemblyAnnouncement.link %}
+                                    <a class="symbol" href="https://{{ link }}">
+                                        <p class="announcements-date">{{ assemblyAnnouncement.date}} :</p>
+                                        <p class="announcements-text">{{assemblyAnnouncement.text}}</p>
+                                    </a>
+                                {% endwith %}
                                 <br>
                             {% endfor %}
                         </td>
                         {% for element in pointers_set %}
                             <td>
-                                {% for key,value in onedata.0.items %}
+                                {% for key,value in pointers.items %}
                                     {% if key == element %}
                                         <p>{{ value }}</p>
                                     {% endif %}

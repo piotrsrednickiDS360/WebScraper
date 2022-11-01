@@ -1,0 +1,15 @@
+# Build an app using file Dockerfile
+build:
+  docker:
+    web: Dockerfile
+    worker: Dockerfile
+# Then run the qcluster as a worker
+run:
+  web:
+    command:
+      - gunicorn TradingSupport.wsgi:application
+    image: web
+  worker:
+    command:
+      - python manage.py qcluster
+    image: worker
