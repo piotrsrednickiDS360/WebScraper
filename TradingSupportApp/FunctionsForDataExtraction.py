@@ -123,7 +123,7 @@ def scrap_data_announcements_and_assembly(symbol):
     for (text, date, link) in zip(textTags, dateTags, linkTags):
 
         announcementText = text.text
-        if "nabycie" in announcementText.lower():
+        if "nabyci" in announcementText.lower():
             index_left = str(link).find("<a href=\"") + 9
             index_right = str(link).find("\" rel")
             announcementText = "Nabycie akcji własnych"
