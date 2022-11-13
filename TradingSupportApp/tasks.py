@@ -2,6 +2,7 @@ from datetime import datetime
 from .FunctionsForDataExtraction import scrap_data_announcements_and_assembly, \
     scrap_data_pointers, scrap_data_names, scrap_symbols
 from .models import *
+from celery import shared_task;
 
 
 def scrap():
@@ -148,3 +149,8 @@ def delete_older_function():
         print('failed deleting')
         print(e)
     return print('deleting finished')
+
+
+@shared_task
+def task():
+    scrap()

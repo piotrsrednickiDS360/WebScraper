@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'TradingSupportApp',
-    'django_q',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +155,6 @@ DCS_SESSION_COOKIE_SAMESITE = "None"
 CSRF_TRUSTED_ORIGINS = ['https://damp-woodland-14190.herokuapp.com', 'https://*.127.0.0.1',
                         'https://trading-support-app.herokuapp.com',
                         'https://trading-support-application.herokuapp.com','http://piotrsrednicki.pythonanywhere.com']
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
