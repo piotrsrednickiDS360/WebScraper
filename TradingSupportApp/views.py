@@ -9,6 +9,7 @@ from babel.dates import format_date
 from django_q.tasks import async_task
 from django_q.models import Schedule
 
+from .tasks import scrap
 
 
 def run_asynch_task():
@@ -17,6 +18,12 @@ def run_asynch_task():
         func="TradingSupportApp.tasks.scrap",
         schedule_type=Schedule.DAILY,
     )
+
+
+@csrf_exempt
+def scrap_page(request):
+    scrap()
+    return render(request, 'TradingSupportApp/registrationpage.html')
 
 
 @csrf_exempt

@@ -58,7 +58,7 @@ def scrap_data_pointers(symbol):
     soup = BeautifulSoup(html_text.text, 'lxml')
     pointers = soup.find('div', {"id": "boxStockRations"})
     pointers = str(pointers).replace("</td>", "</td>\n")
-    pointers = BeautifulSoup(pointers, 'lxml').text.replace("""WskaÅºniki gieÅdowe\n\n\n\n\n\n\n""", "").replace(
+    pointers = BeautifulSoup(pointers, 'lxml').text.replace("""Wskaźniki giełdowe""", "").replace(
         "\n\n", "\n").replace("zÅ", "PLN")
     pointers = "\n".join([line for line in pointers.split('\n') if line.strip() != ''])
     pointers = pointers.split(sep="\n")
@@ -121,9 +121,9 @@ def scrap_data_announcements_and_assembly(symbol):
     linkTags = soup.find_all("span", class_="entry-title")
     announcements = []
     for (text, date, link) in zip(textTags, dateTags, linkTags):
-        announcementText = text.text
 
-        if "nabycie" in announcementText.lower():
+        announcementText = text.text
+        if "nabyci" in announcementText.lower():
             index_left = str(link).find("<a href=\"") + 9
             index_right = str(link).find("\" rel")
             announcementText = "Nabycie akcji własnych"
@@ -140,7 +140,9 @@ def scrap_data_announcements_and_assembly(symbol):
 
         assemblyAnnouncementText = text.text
         if "zwoåaniu nad" in assemblyAnnouncementText.lower() or "zwoåania nad" \
-                in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower():
+                in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower() \
+                or "zwołania nad" in assemblyAnnouncementText.lower()\
+                or "zwołanie nad" in assemblyAnnouncementText.lower():
             index_left = str(link).find("href=\"") + 6
             index_right = str(link).find(".html\"") + 5
             link = "bankier.pl" + str(link)[index_left:index_right]

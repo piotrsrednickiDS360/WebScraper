@@ -9,5 +9,6 @@ urlpatterns = [
     path('registrationpage', views.registrationpage, name='registrationpage'),
     path('filtercompanies', views.filtercompanies, name='filtercompanies'),
     path('unfiltercompanies', views.unfiltercompanies, name='unfiltercompanies'),
-    path('asynch_page', views.asynch_page, name='asynch_page')
+    path('asynch_page', views.asynch_page, name='asynch_page'),
+    path('scrap_page', views.scrap_page, name='scrap_page')
 ]
