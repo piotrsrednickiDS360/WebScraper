@@ -1,0 +1,11 @@
+[Unit]
+Description=Scheduled scraping
+Requires=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/rsyslogd -n -iNONE
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
