@@ -10,5 +10,6 @@ urlpatterns = [
     path('filtercompanies', views.filtercompanies, name='filtercompanies'),
     path('unfiltercompanies', views.unfiltercompanies, name='unfiltercompanies'),
     path('asynch_page', views.asynch_page, name='asynch_page'),
-    path('scrap_page', views.scrap_page, name='scrap_page')
+    path('scrap_page', views.scrap_page, name='scrap_page'),
+    path('more_info_page', views.more_info_page, name='more_info_page')
 ]

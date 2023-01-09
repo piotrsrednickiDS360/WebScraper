@@ -106,7 +106,6 @@ def scrap_data_announcements_and_assembly(symbol):
     """
     # połączenie ze stroną bankier-komunikaty i pobranie strony z danym symbolem
     html_text_announcements = GetHtmlText("https://www.bankier.pl/gielda/notowania/akcje/{}/komunikaty".format(symbol))
-
     http_encoding = html_text_announcements.encoding if 'charset' in \
                                                         html_text_announcements.headers.get('content-type',
                                                                                             '').lower() else None
@@ -120,6 +119,7 @@ def scrap_data_announcements_and_assembly(symbol):
     dateTags = soup.find_all("time", class_="entry-date")
     linkTags = soup.find_all("span", class_="entry-title")
     announcements = []
+    assemblyAnnouncements = []
     for (text, date, link) in zip(textTags, dateTags, linkTags):
 
         announcementText = text.text
@@ -130,28 +130,19 @@ def scrap_data_announcements_and_assembly(symbol):
 
             a = AnnouncementDTO(date['datetime'], announcementText, "bankier.pl" + str(link)[index_left:index_right])
             announcements.append(a)
-    soup = BeautifulSoup(html_text_announcements.text, 'lxml', from_encoding=encoding)
-    # komunikaty
-    textTags = soup.find_all("span", class_="entry-title")
-    dateTags = soup.find_all("time", class_="entry-date")
-    linkTags = soup.find_all("span", class_="entry-title")
-    assemblyAnnouncements = []
-    for (text, date, link) in zip(textTags, dateTags, linkTags):
-
-        assemblyAnnouncementText = text.text
-        if "zwoåaniu nad" in assemblyAnnouncementText.lower() or "zwoåania nad" \
-                in assemblyAnnouncementText.lower() or "zwoåanie nad" in assemblyAnnouncementText.lower() \
-                or "zwołania nad" in assemblyAnnouncementText.lower()\
-                or "zwołanie nad" in assemblyAnnouncementText.lower():
+        if "zwoåaniu nad" in announcementText.lower() or "zwoåania nad" \
+                in announcementText.lower() or "zwoåanie nad" in announcementText.lower() \
+                or "zwołania nad" in announcementText.lower()\
+                or "zwołanie nad" in announcementText.lower():
             index_left = str(link).find("href=\"") + 6
             index_right = str(link).find(".html\"") + 5
             link = "bankier.pl" + str(link)[index_left:index_right]
-            assemblyAnnouncementText = GetAssemblyAnnouncementDataFromFileOrText(link)
-            if assemblyAnnouncementText == "":
+            announcementText = GetAssemblyAnnouncementDataFromFileOrText(link)
+            if announcementText == "":
                 continue
             else:
-                assemblyAnnouncementText = "Ogłoszenie zgromadzenia z ważną informacją"
-            a = AnnouncementDTO(date['datetime'], assemblyAnnouncementText,
+                announcementText = "Ogłoszenie zgromadzenia z ważną informacją"
+            a = AnnouncementDTO(date['datetime'], announcementText,
                                 link)
             assemblyAnnouncements.append(a)
     return announcements, assemblyAnnouncements

@@ -12,8 +12,8 @@ def scrap():
         Returns:
             Function returns an array representing data associated with a symbol
     """
-    symbols = scrap_symbols()
-    # symbols = ["ATLASEST", "KREC"]
+    # symbols = scrap_symbols()
+    symbols = ["ATLASEST", "KREC"]
     symbols_data = []
     symbolIndex = 1
     for symbol in symbols:
@@ -23,6 +23,7 @@ def scrap():
         pointers = scrap_data_pointers(symbol)
         name = scrap_data_names(symbol)
         symbols_data.append([symbol, name, pointers, announcements, assemblyAnnouncements])
+        print(announcements)
         symbolIndex += 1
     delete_older_function()
     save_function(symbols_data)

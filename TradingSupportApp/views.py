@@ -163,7 +163,7 @@ def FilterAssemblyAnnouncements(symbol):
 
 
 @csrf_exempt
-def GetPointersAndAnnouncements(username):
+def GetPointersAndAssemblyAnnouncements(username):
     """
         Function scrapes data about pointers and announcements
         Arguments:
@@ -203,8 +203,8 @@ def mainpage(request):
     """
     # getting pointers and announcements
     #
-    # scrap()
-    symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
+    scrap()
+    symbols, symbols_data, pointers_set = GetPointersAndAssemblyAnnouncements(request.user)
 
     return render(request, 'TradingSupportApp/mainpage.html',
                   {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})
@@ -317,3 +317,35 @@ def asynch_page(request):
     """
     run_asynch_task()
     return render(request, 'TradingSupportApp/mainpage.html')
+
+@csrf_exempt
+def GetPointersAndAnnouncements(username):
+    """
+        Function scrapes data about pointers and announcements
+        Arguments:
+            username: string
+        Returns:
+            Function returns a list, a list, and a set
+    """
+    # getting companies
+    symbols, names = GetCompaniesData()
+    # ignoring unwanted companies
+    unwanted = IgnoreUnwantedCompanies(username)
+    symbols_data = []
+    pointers_set = set({})
+    for symbol, name in zip(symbols, names):
+        # filtering unwanted companies
+        if symbol in unwanted:
+            continue
+        # getting pointers and announcements from database and changing their representation
+        announcements = FilterAnnouncements(symbol)
+        assemblyAnnouncements = FilterAssemblyAnnouncements(symbol)
+        pointers, pointers_set = FilterPointersAndCreateTheirSet(pointers_set, symbol)
+        # add data to list
+        symbols_data.append([symbol, name, pointers, announcements, assemblyAnnouncements])
+    return symbols, symbols_data, pointers_set
+def more_info_page(request):
+    symbols, symbols_data, pointers_set = GetPointersAndAnnouncements(request.user)
+
+    return render(request, 'TradingSupportApp/moreinfo.html',
+                  {"symbols": symbols, "symbols_data": symbols_data, "pointers_set": pointers_set})

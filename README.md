@@ -111,3 +111,10 @@ def function():
 ### 7. **PyCharm** - useful tips:
 - 7.1 ```# !TODO(AN)``` - to do author notes in code
 - 7.2 Reformat .py file according to PEP-8: ctrl+A -> ctrl+shift+alt+L -> enter
+
+### Komendy:
+- python manage.py runserver
+- python manage.py createsuperuser
+- python manage.py migrate
+- python manage.py makemigrations
+- 

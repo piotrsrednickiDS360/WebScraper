@@ -190,11 +190,11 @@ table {
                             {% endwith %}
                         </td>
                         <td class="announcements-td">
-                            {% for assemblyAnnouncement in assemblyAnnouncements %}
-                                {% with  link=assemblyAnnouncement.link %}
+                            {% for announcement in announcements %}
+                                {% with  link=announcement.link %}
                                     <a class="symbol" href="https://{{ link }}">
-                                        <p class="announcements-date">{{ assemblyAnnouncement.date}} :</p>
-                                        <p class="announcements-text">{{assemblyAnnouncement.text}}</p>
+                                        <p class="announcements-date">{{ announcement.date}} :</p>
+                                        <p class="announcements-text">{{announcement.text}}</p>
                                     </a>
                                 {% endwith %}
                                 <br>

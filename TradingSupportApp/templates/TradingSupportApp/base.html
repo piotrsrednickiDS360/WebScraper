@@ -41,6 +41,9 @@
     padding-top:12px;
 }
 
+.MainButton{
+    margin-right:105px;
+}
 .FilterButton{
     margin-right:210px;
 }
@@ -48,13 +51,8 @@
 .UnFilterButton{
     margin-right:315px;
 }
-
-.MainButton{
-    margin-right:105px;
-}
-
-.Scrap{
-    margin-right:420px;
+.MoreInfo{
+    margin-right:430px;
 }
 
 .LoggedAs{
@@ -116,6 +114,11 @@ body{
             <div class="FilterButton btn">
                 {% block FilterButton %}
                     <a  href="{% url 'filtercompanies' %}">Filter</a>
+                {% endblock %}
+            </div>
+            <div class="MoreInfo btn">
+                {% block MoreInfoButton %}
+                    <a  href="{% url 'more_info_page' %}">More</a>
                 {% endblock %}
             </div>
             <div class="UnFilterButton btn">
